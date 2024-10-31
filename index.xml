@@ -84,7 +84,7 @@ draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-
   Depending on the project, storing a large number of rasters for the
   whole US may be unnecessary and could massively increase data storage
   costs. Originally developed for a research project covering the
-  Phoenix metro area this script is designed to work with a shapefile
+  Phoenix Metro. area this script is designed to work with a shapefile
   defining the area of interest, and includes a variety of functions
   which will iteratively (1) download the requested data file from
   PRISM, (2) clip the data to the study area, and (3) save the output
@@ -180,7 +180,7 @@ prism_set_dl_dir(paste(dir.string, &quot;Data&quot;, sep = &quot;/&quot;))</pref
     responsible for updating to suit the needs of your project.</p>
     <sec id="setting-a-date-range">
       <title>2.3.1 Setting a date range</title>
-      <p>At minimum, a date range is required for data to download.
+      <p>At minimum a date range is required for data to download.
       Depending on the data set that you are interested in, some PRISM
       records extend back as far as 1895, and new data is typically made
       available in near real time. Here we will look for data from the
@@ -188,7 +188,7 @@ prism_set_dl_dir(paste(dir.string, &quot;Data&quot;, sep = &quot;/&quot;))</pref
       <preformat># Define date range
 min.Date &lt;- &quot;2020-01-01&quot;
 max.Date &lt;- &quot;2022-12-31&quot;
-# For the most up to date data available, use max.Date &lt;- lubridate::today()</preformat>
+# For most up to date data available, use max.Date &lt;- lubridate::today()</preformat>
       <p>Additionally, in some instances you may only be interested in a
       certain months of the year. You may optionally set a range of
       months here. If no months are defined, the default behavior will
@@ -313,7 +313,8 @@ if (tRes == &quot;monthlys&quot;) {
     directory, this will also allow us to quantify the storage savings
     after we have cropped our files in
     <xref alt="Section 3.4" rid="sec-cropData">Section 3.4</xref>.</p>
-    <preformat># Optional: Check size of downloaded data
+    <preformat>#| label: dataSize-fun
+# Optional: Check size of downloaded data
 dir_size &lt;- function(path, recursive = TRUE) {
   stopifnot(is.character(path))
   files &lt;- list.files(path, full.names = T, recursive = recursive)
@@ -330,10 +331,10 @@ cat(paste(&quot;Data folder size on disk =&quot;, rawDataSize, &quot;MB&quot;, s
 <sec id="sec-terra">
   <title>3 Cropping PRISM data to study area</title>
   <p>So far we have been working primaraly with the prism package, and
-  have succeeded in connecting to the PRISM api and efficiently
+  have succeeded in connecting to the PRISM api and eficiently
   downloading data in bulk. However, this could arguably have been
   achieved just as efficiently by simply calling the required function
-  from the prism package, without all the extraneous setup. Here we will
+  from the prism package, without all the extranious setup. Here we will
   extend the useful application of the prism package by incorporating
   functions from the terra package
   [<xref alt="4" rid="ref-terra" ref-type="bibr">4</xref>] to crop the
@@ -361,9 +362,8 @@ if(!require('terra')) {  # if package is not available, require() returns FALSE
     <p>While we could jump straight into the automated data processing,
     it is generally a good idea to take a moment to explore your data
     prior to bulk processing. This will also afford us the opportunity
-    to briefly explore some of the functions of terra
-    [<xref alt="tera?" rid="ref-tera" ref-type="bibr"><bold>tera?</bold></xref>],
-    a massively useful package for geospatial data analysis in R!</p>
+    to briefly explore some of the functions of terra, a massively
+    useful package for geospatial data analysis in R!</p>
     <p>First, lets just load in a representative data folder, and a
     raster file. Here I will be using a regular expression (regex) for
     pattern matching. Regex is largely beyond the scope of this
@@ -422,16 +422,16 @@ plot(shp)  # Check if data loaded correctly</preformat>
       <p><bold>IMPORTANT!</bold> Geospatial data projections are a
       complex and highly technical field, related to the 2-dimensional
       representation of 3-dimensional objects. While I will refrain from
-      a long tangent on map projections, suffice to say that projections
-      are critical for mapping as well as ensuring accurate
+      a long diatrive on map projections, suffice to say that
+      projections are critical for mapping as well as ensuring accurate
       measurements. Unlike other commercial GIS software, terra will not
       perform “on the fly” projections, so all geospatial data must use
       a similar projection to be mapped appropriately.</p>
       <p>Here we will use an Arizona State Plane, Central (ft,
       EPSG:2223), which is appropriate for Maricopa county, AZ. For
-      future projects discuss appropriate data projections with your
-      project lead or GIS manager. See https://epsg.io/ to query EPSG
-      codes for your desired projection.</p>
+      future projects discuss appropriate data projections with your PI
+      or GIS manager. See https://epsg.io/ to query EPSG codes for your
+      desired projection.</p>
       <preformat># Project Data
 # IMPORTANT!
 # Data projections control the planar (2d) shape of your map, projected from a spherical
@@ -580,7 +580,7 @@ system.time({  # Timing function
     }
   }  # end for dir in dirs
 })  # end sys.time</preformat>
-    <p>Processing for this small example takes approximately 13
+    <p>Processing for this small exampl takes approximately 13
     seconds.</p>
   </sec>
   <sec id="sec-cropData">
@@ -675,7 +675,7 @@ cat(paste(&quot;Space saved on disk by cropping files =&quot;, storageSaved, &qu
 </ref-list>
 </back>
 
-<sub-article article-type="notebook" id="nb-2-nb-1">
+<sub-article article-type="notebook" id="nb-3-nb-1">
 <front-stub>
 </front-stub>
 
