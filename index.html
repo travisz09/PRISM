@@ -134,7 +134,10 @@ div.csl-indent {
   <li><a href="#automated-data-processing" id="toc-automated-data-processing" class="nav-link" data-scroll-target="#automated-data-processing"><span class="header-section-number">3.3</span> Automated data processing</a></li>
   <li><a href="#sec-cropData" id="toc-sec-cropData" class="nav-link" data-scroll-target="#sec-cropData"><span class="header-section-number">3.4</span> Checking the cropped data</a></li>
   </ul></li>
-  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">4</span> Conclusions</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">4</span> Conclusions</a>
+  <ul class="collapse">
+  <li><a href="#get-the-code" id="toc-get-the-code" class="nav-link" data-scroll-target="#get-the-code"><span class="header-section-number">4.1</span> Get the code</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="Citations-preview.html"><i class="bi bi-journal-code"></i>Citations.md</a></li><li><a href="notebooks/data-screening-preview.html"><i class="bi bi-journal-code"></i>Data Screening</a></li></ul></div></nav>
 </div>
@@ -482,7 +485,11 @@ cat(paste("Space saved on disk by cropping files =", storageSaved, "MB", sep = "
 <h2 data-number="4" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">4</span> Conclusions</h2>
 <p>In this simple example I have shown you how to efficiently download bulk climactic data from the PRISM api using the prism R package. I also briefly introduced the terra package, and showed you how to explore and map geospatial data. Then we used a simple code block to automate the bulk processing of raw data for our area of interest, saving ~80% of file storage requirements.</p>
 <p>Hopefully by now you feel confident in being able to apply these methods to your own study area. By updating the shapefile, and modifying a few key variables you can efficiently acquire climactic data for a broad range of applications anywhere in the contiguous US. Using the R script accompanying this tutorial you can wow your supervisors and be the envy of your peers with how simply and efficiently you are able to access the data you need.</p>
+<section id="get-the-code" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="get-the-code"><span class="header-section-number">4.1</span> Get the code</h3>
+<p>Access the full R script used in this tutorial <a href="https://github.com/travisz09/PRISM/tree/main/R-Script">here</a>.</p>
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
