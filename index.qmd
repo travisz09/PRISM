@@ -8,6 +8,8 @@ authors:
 bibliography: references.bib
 csl: diabetologia.csl
 number-sections: true
+execute:
+  echo: fenced
 format:
   html:
     code-copy: true
@@ -32,7 +34,7 @@ While the prism R package is great, the goal of this tutorial, and associated sc
 ### Setup
 As with any R [@base_R] script, we must first load the required packages. Initially we will utilize 2 packages, prism and lubridate. The prism [@prism] package is the primary R package for programmatically interacting with the PRISM api. Lubridate [@lubridate] is a package for working with dates, and will be used for its `years()` function.
 
-```
+```{r}
  Setup ----
 # Packages
 # Check if packages are installed, if not download
@@ -54,7 +56,7 @@ Next we set the working directory (wd). This is the absolute file path in your m
 
 Here I have used the R function `getwd()` to obtain the default working directory from your R session. This is primarily used to make sharing this script easier and more convenient, but it is highly recommended that you change the var `dir.string` to an absolute file path representing your preferred file location, as this will be used extensively while downloading and managing your PRISM data.
 
-```
+```{r}
 # Set Working Directory (wd)
 dir.string <- getwd()  # Update with directory string as needed!
 setwd(dir.string)
@@ -63,7 +65,7 @@ getwd()  # Check wd
 
 Next we will create a new folder in our wd called "Data", and set it as the default data download directory for the PRISM api using the `prism_set_dl_dir()` function.
 
-```
+```{r}
 # Create Data folder in wd
 dir.create("Data")  # Ignore warning if dir already exists
 
@@ -79,7 +81,7 @@ Now that we have set up our directory, we next must define the date range and va
 #### Setting a date range
 At minimum, a date range is required for data to download. Depending on the data set that you are interested in, some PRISM records extend back as far as 1895, and new data is typically made available in near real time. Here we will look for data from the beginning of 2020 through 2022.
 
-```
+```{r}
 # Define date range
 min.Date <- "2020-01-01"
 max.Date <- "2022-12-31"
@@ -88,7 +90,7 @@ max.Date <- "2022-12-31"
 
 Additionally, in some instances you may only be interested in a certain months of the year. You may optionally set a range of months here. If no months are defined, the default behavior will be to download all months of the year (if applicable). In this example we will only look at data from April to July (4 to 7).
 
-```
+```{r}
 # Optional: list of months to download for the get_prism_monthlies() function
 months <- c(4:7)  # Numeric list, not strings!
 ```
@@ -98,7 +100,7 @@ PRISM data is available at four temporal scales, daily, monthly, annual, and 30-
 
 Some things to consider at this point, firstly, in some instances you may want a dis-continuous data set, such as daily observations for the month of July from 1999 to 2020. Unfortunately, none of these scripts are currently able to accept a dis-continuous date range. Your choices are to either download the full continuous dataset and subset the data after it has been downloaded, break the dataset into smaller blocks of continuous dates and run multiple times, or write your own custom script for handling date breaks. Also, the way that I have written the `get_prism_monthlys()` and `get_prism_normals()` functions may sometimes result in unexpected behavior, depending on the `min.date` and `max.date` provided. In short, the function extracts the year from the date variables, and the rest of the date bounds are disregarded. Therefore, you may get more data than you expect, but the error will always be inclusive (as opposed to not downloading requested data).
 
-```
+```{r}
 # Define temporal resolution
 # tRes must be one of "dailys", "monthlys", "annual", "normals"
 tRes <- "monthlys"
@@ -107,7 +109,7 @@ tRes <- "monthlys"
 #### Setting the climatic variables
 There are 11 climactic variables available through PRISM, of which seven are available through the api. These are precipitation (ppt), mean temperature (tmean), minimum temperature (tmin), maximum temperature (tmax), mean dew point temperature (tdmean), minimum vapor pressure deficit (vpdmin), and maximum vapor pressure deficit (vpdmax). Any combination of these variables may be assigned to the `prismVars` variable, and all the requested climactic data will be downloaded.
 
-```
+```{r}
 # Define data variables
 # Must be one (or several) of "ppt", "tmean", "tmin", "tmax", "tdmean", "vpdmin", "vpdmax"
 # Use c("var1", "var2", etc...) for multiple variables
@@ -121,7 +123,7 @@ Now that we have defined the data to download, we can execute the prism function
 
 To make sure that the `tRes` variable is set correctly we will check it against a list. If an issue is detected it will return a custom error message which will warn the user to double check their work.
 
-```
+```{r}
 # Check if temporal resolution (tRes) is set correctly.
 # If tRes not in list
 if (tRes != "dailys" & tRes != "monthlys" & tRes != "annual" & tRes != "normals") {
@@ -134,7 +136,7 @@ Next, to avoid potentially costly user errors an if statement is called so that 
 
 Depending on the amount of data requested this function may take from seconds to hours. It includes several convenient progress statements, and is nested inside a timing function. This small example should take about 35 seconds to complete.
 
-```
+```{r}
 # If tRes is "monthlys"
 # Monthlies ----
 if (tRes == "monthlys") {
@@ -166,7 +168,7 @@ if (tRes == "monthlys") {
 ### Checking the raw data{#sec-rawData}
 At this point all your data should have downloaded into the "Data" folder. You can check on your files using the file explorer (or finder on Mac). We will use a custom function to check our files programmatically and return the total size of files in our directory, this will also allow us to quantify the storage savings after we have cropped our files in @sec-cropData.
 
-```
+```{r}
 # Optional: Check size of downloaded data
 dir_size <- function(path, recursive = TRUE) {
   stopifnot(is.character(path))
@@ -192,7 +194,7 @@ While contained within the same script for convenience, the code presented in th
 
 Let’s begin by loading the terra package.
 
-```
+```{r}
 # Packages
 # "terra" package for working with geospatial datasets
 if(!require('terra')) {  # if package is not available, require() returns FALSE
@@ -206,7 +208,7 @@ While we could jump straight into the automated data processing, it is generally
 
 First, let’s just load in a representative data folder, and a raster file. Here I will be using a regular expression (regex) for pattern matching. Regex is largely beyond the scope of this tutorial, but it is a wildly useful programmatic tool for advanced users. I will do my best to include plain language explanations for all my regex patterns, but for those who are interested in learning more I highly recommend reading this [vignette](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html) on cran.
 
-```
+```{r}
 # Locate Raster files, "bil" extension.
 folder1 <- list.files("Data")[1] # Select first data folder in download directory
 file1 <- list.files(paste("Data", folder1, sep = "/"), 
@@ -223,7 +225,7 @@ name <- strsplit(file1, split = "/")[[1]][length(strsplit(file1, split = "/")[[1
 #### Loading raster data
 Loading raster data in R is as simple as calling the terra `rast()` function, with the file path to the data. After loading the raster (i.e. terra "spatRast" object) we can map it using `terra::plot()`. Note that when terra was loaded the terra `plot()` function automatically masked the base R `plot()` function and can be called simply `plot()`.
 
-```
+```{r}
 # Load raster data, plot
 rast1 <- rast(file1)  # terra spatRaster object
 plot(rast1, main = name)  # Check if data loaded correctly
@@ -232,7 +234,7 @@ plot(rast1, main = name)  # Check if data loaded correctly
 #### Loading vector data
 Similar to loading raster data, vector data can be loaded very simply using the terra `vect()` function. The resulting vector data is a "spatVect" object. When loading shapefiles, which consist of several related files in a standard structure, only the .shp file needs to be called, however any missing files not present in the given shapefile directory may cause unexpected errors.
 
-```
+```{r}
 # Load shapefile for clipping data extent
 # Example = Maricopa County, AZ
 shp_path <- list.files("Shapefile",  # Relative file path
@@ -250,7 +252,7 @@ Geospatial data projections are a complex and highly technical field, related to
 
 Here we will use an Arizona State Plane, Central (ft, EPSG:2223), which is appropriate for Maricopa County, AZ. For future projects discuss appropriate data projections with your project leader or GIS manager. See https://epsg.io/ to query EPSG codes for your desired projection.
 
-```
+```{r}
 # Project Data
 # IMPORTANT!
 # Data projections control the planar (2d) shape of your map, projected from a spherical
@@ -284,7 +286,7 @@ crs(rast1)
 
 Now that we have set our data projection we can map our data layers together on a single map. First, we will map the full PRISM dataset covering the whole contiguous US, adding Maricopa county on top of our base layer.
 
-```
+```{r}
 # Check projections and layer alignment
 plot(rast1, main = name)  # USA will look skewed in "Arizona Central" projection
 plot(shp, add = T)  # Shape will appear small on USA map, position should be correct
@@ -298,7 +300,7 @@ Notice how strange the US looks in this projection? This is because our projecti
 
 Now let’s map the data using only the extent of our shapefile, but without cropping the data layer. This is equivalent of setting the x and y scales in a typical scatterplot, without modifying the underlying data.
 
-```
+```{r}
 # Define study area extent, plot
 e <- ext(shp)  # extent of your shapefile
 # Plot PRISM raster with limited extent
@@ -310,7 +312,7 @@ plot(shp, add = T)
 #### Crop the data
 Now that we have set our projection, and we have an extent that we are happy with we can crop our data layer.
 
-```
+```{r}
 # Crop raster, plot
 rast_crop <- crop(rast1, 1.05 * e)  # Add 5% margin to extent to avoid clipping vertices
 plot(rast_crop, main = name)
@@ -320,7 +322,7 @@ plot(shp, add = T)
 #### Save the output
 Create a new directory for outputs and use the `writeRaster()` function to save the output.
 
-```
+```{r}
 # Create directory for modified outputs
 dir.create("Output", recursive = T)  # Ignore warning if dir already exists
 writeRaster(rast_crop, filename = "Output/test_case.tif",
@@ -334,12 +336,12 @@ In this section we will use some complex logic to bulk process all the data file
 
 While it is recommended that the PRISM raw data files are deleted, the data files may not be recoverable through the recycling bin. Therefore, **please be sure that you do not need to retain the raw data before proceeding, as repeated downloading of data from the PRISM api may not be possible**.
 
-```
+```{r}
 # Optional vars
 retainRaw <- F  # Keep raw data (full USA extent)?
 ```
 
-```
+```{r}
 # Crop all Datasets ----
 # Now that we have explored our data and tested our algorithm, we can automate the cropping
 #   of all the remaining files.
@@ -399,7 +401,7 @@ Processing for this small example takes approximately 13 seconds.
 ### Checking the cropped data{#sec-cropData}
 As with the raw data above, we will check the contents of our cropped data in the "Output" directory and look at how much space we have saved by cropping our data. If you restarted your R session at the beginning of @sec-terra then you may need to rerun the `dir_size()` function in @sec-rawData.
 
-```
+```{r}
 # Optional: Check size of Output files
 croppedDataSize <- dir_size("Output")/10**6
 cat(paste("Output folder size on disk =", croppedDataSize , "MB", sep = " "))
