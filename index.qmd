@@ -8,6 +8,9 @@ authors:
 bibliography: references.bib
 csl: diabetologia.csl
 number-sections: true
+format:
+  html:
+    code-copy: hover
 ---
 
 ## Abstract
