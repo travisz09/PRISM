@@ -10,7 +10,7 @@ csl: diabetologia.csl
 number-sections: true
 format:
   html:
-    code-copy: hover
+    code-copy: true
 ---
 
 ## Abstract
