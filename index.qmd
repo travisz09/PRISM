@@ -230,6 +230,7 @@ Loading raster data in R is as simple as calling the terra `rast()` function, wi
 rast1 <- rast(file1)  # terra spatRaster object
 plot(rast1, main = name)  # Check if data loaded correctly
 ```
+![PRISM precipitation data for April, 2020.](images/US_noProject.png)
 
 #### Loading vector data
 Similar to loading raster data, vector data can be loaded very simply using the terra `vect()` function. The resulting vector data is a "spatVect" object. When loading shapefiles, which consist of several related files in a standard structure, only the .shp file needs to be called, however any missing files not present in the given shapefile directory may cause unexpected errors.
@@ -245,6 +246,7 @@ shp_path <- list.files("Shapefile",  # Relative file path
 shp <- vect(shp_path)  # terra spatVector object
 plot(shp)  # Check if data loaded correctly
 ```
+![Maricopa County, AZ shapefile data](images/MaricopaCounty.png)
 
 #### Data projections
 **IMPORTANT!**
@@ -295,6 +297,7 @@ plot(shp, add = T)  # Shape will appear small on USA map, position should be cor
 # Depending on the background color and size of your study area your shapefile may be 
 #   difficult to see at this stage.
 ```
+![PRISM precipitation data, reprojected to AZ State Plane, Central (ft) EPSG:2223.](images/US_project.png)
 
 Notice how strange the US looks in this projection? This is because our projection is optimized for central AZ. It is highly accurate in that area, and the further away from that region the data is, the more skewed the data becomes.
 
@@ -308,6 +311,7 @@ plot(rast1, ext = e, main = name)
 plot(shp, add = T)
 # Your shapefile should be visible as a thin outline.
 ```
+![PRISM precipitation data, zoomed to Maricopa County, AZ.](images/limitedExtent.png)
 
 #### Crop the data
 Now that we have set our projection, and we have an extent that we are happy with we can crop our data layer.
@@ -318,6 +322,7 @@ rast_crop <- crop(rast1, 1.05 * e)  # Add 5% margin to extent to avoid clipping 
 plot(rast_crop, main = name)
 plot(shp, add = T)
 ```
+![PRISM precipitation data, cropped to Maricopa County, AZ, with a 5% buffer to ensure that no data is clipped within the study area.](images/Cropped.png)
 
 #### Save the output
 Create a new directory for outputs and use the `writeRaster()` function to save the output.

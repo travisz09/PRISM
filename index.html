@@ -86,6 +86,9 @@ div.csl-indent {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-3a9e258889b7bd05a290659f0589226b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script async="" src="https://hypothes.is/embed.js"></script>
 <script>
   window.document.addEventListener("DOMContentLoaded", function (_event) {
@@ -386,6 +389,12 @@ div.csl-indent {
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="in">rast1 &lt;- rast(file1)  # terra spatRaster object</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="in">plot(rast1, main = name)  # Check if data loaded correctly</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/US_noProject.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="PRISM precipitation data for April, 2020."><img src="images/US_noProject.png" class="img-fluid figure-img" alt="PRISM precipitation data for April, 2020."></a></p>
+<figcaption>PRISM precipitation data for April, 2020.</figcaption>
+</figure>
+</div>
 </section>
 <section id="loading-vector-data" class="level4" data-number="3.2.2">
 <h4 data-number="3.2.2" class="anchored" data-anchor-id="loading-vector-data"><span class="header-section-number">3.2.2</span> Loading vector data</h4>
@@ -401,6 +410,12 @@ div.csl-indent {
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="in">shp &lt;- vect(shp_path)  # terra spatVector object</span></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="in">plot(shp)  # Check if data loaded correctly</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/MaricopaCounty.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Maricopa County, AZ shapefile data"><img src="images/MaricopaCounty.png" class="img-fluid figure-img" alt="Maricopa County, AZ shapefile data"></a></p>
+<figcaption>Maricopa County, AZ shapefile data</figcaption>
+</figure>
+</div>
 </section>
 <section id="data-projections" class="level4" data-number="3.2.3">
 <h4 data-number="3.2.3" class="anchored" data-anchor-id="data-projections"><span class="header-section-number">3.2.3</span> Data projections</h4>
@@ -447,6 +462,12 @@ div.csl-indent {
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="in"># Depending on the background color and size of your study area your shapefile may be </span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="in">#   difficult to see at this stage.</span></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/US_project.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="PRISM precipitation data, reprojected to AZ State Plane, Central (ft) EPSG:2223."><img src="images/US_project.png" class="img-fluid figure-img" alt="PRISM precipitation data, reprojected to AZ State Plane, Central (ft) EPSG:2223."></a></p>
+<figcaption>PRISM precipitation data, reprojected to AZ State Plane, Central (ft) EPSG:2223.</figcaption>
+</figure>
+</div>
 <p>Notice how strange the US looks in this projection? This is because our projection is optimized for central AZ. It is highly accurate in that area, and the further away from that region the data is, the more skewed the data becomes.</p>
 <p>Now let’s map the data using only the extent of our shapefile, but without cropping the data layer. This is equivalent of setting the x and y scales in a typical scatterplot, without modifying the underlying data.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -457,6 +478,12 @@ div.csl-indent {
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="in">plot(shp, add = T)</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="in"># Your shapefile should be visible as a thin outline.</span></span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/limitedExtent.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="PRISM precipitation data, zoomed to Maricopa County, AZ."><img src="images/limitedExtent.png" class="img-fluid figure-img" alt="PRISM precipitation data, zoomed to Maricopa County, AZ."></a></p>
+<figcaption>PRISM precipitation data, zoomed to Maricopa County, AZ.</figcaption>
+</figure>
+</div>
 </section>
 <section id="crop-the-data" class="level4" data-number="3.2.4">
 <h4 data-number="3.2.4" class="anchored" data-anchor-id="crop-the-data"><span class="header-section-number">3.2.4</span> Crop the data</h4>
@@ -467,6 +494,12 @@ div.csl-indent {
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="in">plot(rast_crop, main = name)</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="in">plot(shp, add = T)</span></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/Cropped.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="PRISM precipitation data, cropped to Maricopa County, AZ, with a 5% buffer to ensure that no data is clipped within the study area."><img src="images/Cropped.png" class="img-fluid figure-img" alt="PRISM precipitation data, cropped to Maricopa County, AZ, with a 5% buffer to ensure that no data is clipped within the study area."></a></p>
+<figcaption>PRISM precipitation data, cropped to Maricopa County, AZ, with a 5% buffer to ensure that no data is clipped within the study area.</figcaption>
+</figure>
+</div>
 </section>
 <section id="save-the-output" class="level4" data-number="3.2.5">
 <h4 data-number="3.2.5" class="anchored" data-anchor-id="save-the-output"><span class="header-section-number">3.2.5</span> Save the output</h4>
@@ -1004,6 +1037,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
