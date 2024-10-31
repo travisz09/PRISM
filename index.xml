@@ -422,16 +422,16 @@ plot(shp)  # Check if data loaded correctly</preformat>
       <p><bold>IMPORTANT!</bold> Geospatial data projections are a
       complex and highly technical field, related to the 2-dimensional
       representation of 3-dimensional objects. While I will refrain from
-      a long diatrive on map projections, suffice to say that
-      projections are critical for mapping as well as ensuring accurate
+      a long tangent on map projections, suffice to say that projections
+      are critical for mapping as well as ensuring accurate
       measurements. Unlike other commercial GIS software, terra will not
       perform “on the fly” projections, so all geospatial data must use
       a similar projection to be mapped appropriately.</p>
       <p>Here we will use an Arizona State Plane, Central (ft,
       EPSG:2223), which is appropriate for Maricopa county, AZ. For
-      future projects discuss appropriate data projections with your PI
-      or GIS manager. See https://epsg.io/ to query EPSG codes for your
-      desired projection.</p>
+      future projects discuss appropriate data projections with your
+      project lead or GIS manager. See https://epsg.io/ to query EPSG
+      codes for your desired projection.</p>
       <preformat># Project Data
 # IMPORTANT!
 # Data projections control the planar (2d) shape of your map, projected from a spherical
@@ -580,7 +580,7 @@ system.time({  # Timing function
     }
   }  # end for dir in dirs
 })  # end sys.time</preformat>
-    <p>Processing for this small exampl takes approximately 13
+    <p>Processing for this small example takes approximately 13
     seconds.</p>
   </sec>
   <sec id="sec-cropData">
