@@ -20,8 +20,8 @@
 #   website, or they can be accessed programmatically through the data api using the R 
 #   package prism.
 #
-# While the prism R package is great, this script extends the prism package in an attempt to 
-#   solve a common problem. PRISM data is delivered as a raster for the contiguous US (at 4Km
+# While the prism R package is great, this script extends the prism package to solve
+#   a common problem. PRISM data is delivered as a raster for the contiguous US (at 4Km
 #   or 800m resolution), when often only a much smaller extent is needed to answer the 
 #   research question at hand. Depending on the project, storing a large number of rasters 
 #   for the whole US may be unnecessary and could massively increase data storage costs. 
@@ -40,11 +40,11 @@
 
 # WARNING!
 ## Repeated downloading of files from the PRISM api may result in sanctions, including
-##  blocking your IP address. Please be respectfull of these resources.
+##  blocking your IP address. Please be respectful of these resources.
 
 # Setup ----
 # Packages
-# Check if packages are installed, if not downlowad
+# Check if packages are installed, if not download
 # PRISM api package 'prism'
 if(!require('prism')) {  # if package is not available, require() returns FALSE
   install.packages('prism')  # install the package
@@ -67,7 +67,7 @@ dir.create("Data")  # Ignore warning if dir already exists
 
 # Assign prism download directory
 # Use the paste() function to concatenate the full file path
-# Use full directory path for more rhobust code (less error prone)
+# Use full directory path for more robust code (less error prone)
 prism_set_dl_dir(paste(dir.string, "Data", sep = "/"))
 
 # Define date range
@@ -174,7 +174,7 @@ if (tRes == "normals") {
     for (prismVar in prismVars) {
       print(prismVar)  # Print the current variable
       get_prism_normals(type = prismVar, # dataset to be downloaded
-                        resolution = "800m", # also available in "4km" resolution 
+                        resolution = "800m",  # also available in "4km" resolution 
                         mon = months,  # Months to download
                         annual = T,  # for 30 year annual averages.
                        keepZip = F) # delete zip folders  
@@ -219,7 +219,7 @@ rast1 <- rast(file1)  # terra spatRaster object
 plot(rast1, main = name)  # Check if data loaded correctly
 
 # Load shapefile for clipping data extent
-# Example = Maricopa county, AZ
+# Example = Maricopa County, AZ
 shp_path <- list.files("Shapefile",  # Relative file path
                       # pattern = regex, ".shp" at end of string.
                       pattern = ".shp$",  
@@ -242,7 +242,7 @@ crs(shp)  # Projection of your shapefile
 #   do not match.
 setequal(crs(rast), crs(shp))  # check if objects are equal
 # For this tutorial, I will use AZ State Planes, Central projection, which is appropriate
-#   for Maricopa County, AZ (EPSG:2223). Consult your PI or GIS technician for help selecting
+#   for Maricopa County, AZ (EPSG:2223). Consult your project leader or GIS manager for help selecting
 #   the appropriate projection for your research.
 projection = "EPSG:2223"
 # For additional help with projections see:
@@ -284,7 +284,7 @@ writeRaster(rast_crop, filename = "Output/Monthlies_test_case.tif",
             overwrite = T)
 
 # Crop all Datasets ----
-# Now that we have explored our data and tested our algorithm we can automate the cropping
+# Now that we have explored our data and tested our algorithm, we can automate the cropping
 #   of all the remaining files.
 # Setup
 # list directories
@@ -299,7 +299,7 @@ dirs
 #                       # Full file path
 #                       full.names = T)
 # shp <- project(vect(shp_path), projection)  # terra spatVector object
-# e <- 1.05 * ext(shp) # same ext as above
+# e <- 1.05 * ext(shp)  # same ext as above
 
 # Optional vars
 retainRaw <- F  # Keep raw data (full USA extent)?
@@ -324,29 +324,29 @@ system.time({  # Timing function
       # If file is .bil (raster data)
       if (grepl("bil.bil$", file) == T) {
         # Process raster data
-        r <- rast(paste(dir, file, sep = "/")) # load raster data
-        r_proj <- project(r, projection) # project
-        r_crop <- crop(r_proj, ext(1.05 * ext(shp))) # crop
+        r <- rast(paste(dir, file, sep = "/"))  # load raster data
+        r_proj <- project(r, projection)  # project
+        r_crop <- crop(r_proj, ext(1.05 * ext(shp)))  # crop
 
         # Write cropped raster data
         # Preserve file structure and naming conventions from PRISM
         writeRaster(r_crop, 
           filename = paste("Output/", name, "/", name, ".bil", sep = ""), 
           filetype = "EHdr",
-          overwrite = T)  # Enable overwriteing
+          overwrite = T)  # Enable overwriting
       } else {  # File metadata
         metadataFile = list.files(dir, pattern = file, full.names = T)
         # Copy metadata into output dir)
         file.copy(metadataFile,
           paste("Output/", name, sep = ""))
       }
-    }  # end for file in files
+    }   # end for file in files
 
     if (retainRaw == F) {
       # Delete raw data
       unlink(dir, recursive = T)
     }
-  }  # end for dir in dirs
+  }   # end for dir in dirs
 })  # end sys.time
 
 # Optional: Check size of Output files
