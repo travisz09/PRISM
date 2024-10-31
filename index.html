@@ -153,7 +153,7 @@ div.csl-indent {
 <section id="abstract" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="abstract"><span class="header-section-number">1</span> Abstract</h2>
 <p>Parameter-elevation Regressions on Independent Slopes Model (PRISM) data is available from Oregon State University for a variety of common climate variables such as min/max temperature, precipitation, dew point etc. These datasets are extremely useful in a variety of research applications, and they can be conveniently accessed through the <a href="https://prism.oregonstate.edu/">PRISM website</a>, or they can be accessed programmatically through the data api using the R package <a href="https://cran.r-project.org/web/packages/prism/index.html">prism</a>.</p>
-<p>While the prism R package is great, the goal of this tutorial, and associated script, is to extend the prism package in an attempt to solve a common problem. PRISM data is delivered as a raster for the contiguous US (at 4Km or 800m resolution), when often only a much smaller extent is needed to answer the research question at hand. Depending on the project, storing a large number of rasters for the whole US may be unnecessary and could massively increase data storage costs. Originally developed for a research project covering the Phoenix metro area this script is designed to work with a shapefile defining the area of interest, and includes a variety of functions which will iteratively (1) download the requested data file from PRISM, (2) clip the data to the study area, and (3) save the output clipped raster, preserving all relevant metadata and file structure. The original (US extent) data files are then, optionally, deleted to save storage space.</p>
+<p>While the prism R package is great, the goal of this tutorial, and associated script, is to extend the prism package to solve a common problem. PRISM data is delivered as a raster for the contiguous US (at 4Km or 800m resolution), when often only a much smaller extent is needed to answer the research question at hand. Depending on the project, storing a large number of rasters for the whole US may be unnecessary and could massively increase data storage costs. Originally developed for a research project covering the Phoenix metro area this script is designed to work with a shapefile defining the area of interest, and includes a variety of functions which will iteratively (1) download the requested data file from PRISM, (2) clip the data to the study area, and (3) save the output clipped raster, preserving all relevant metadata and file structure. The original (US extent) data files are then, optionally, deleted to save storage space.</p>
 <section id="objectives" class="level3" data-number="1.1">
 <h3 data-number="1.1" class="anchored" data-anchor-id="objectives"><span class="header-section-number">1.1</span> Objectives</h3>
 <ol type="1">
@@ -168,14 +168,14 @@ div.csl-indent {
 <h2 data-number="2" class="anchored" data-anchor-id="sec-prism"><span class="header-section-number">2</span> Downloading PRISM data</h2>
 <section id="warning" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="warning"><span class="header-section-number">2.1</span> WARNING!</h3>
-<p><strong>Repeated downloading of files from the PRISM api may result in sanctions, including blocking your IP address. Please be respectfull of these resources.</strong></p>
+<p><strong>Repeated downloading of files from the PRISM api may result in sanctions, including blocking your IP address. Please be respectful of these resources.</strong></p>
 </section>
 <section id="setup" class="level3" data-number="2.2">
 <h3 data-number="2.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">2.2</span> Setup</h3>
 <p>As with any R <span class="citation" data-cites="base_R">[<a href="#ref-base_R" role="doc-biblioref">1</a>]</span> script, we must first load the required packages. Initially we will utilize 2 packages, prism and lubridate. The prism <span class="citation" data-cites="prism">[<a href="#ref-prism" role="doc-biblioref">2</a>]</span> package is the primary R package for programmatically interacting with the PRISM api. Lubridate <span class="citation" data-cites="lubridate">[<a href="#ref-lubridate" role="doc-biblioref">3</a>]</span> is a package for working with dates, and will be used for its <code>years()</code> function.</p>
 <pre><code> Setup ----
 # Packages
-# Check if packages are installed, if not downlowad
+# Check if packages are installed, if not download
 # PRISM api package 'prism'
 if(!require('prism')) {  
   # if package is not available, require() returns FALSE
@@ -188,8 +188,8 @@ if(!require('lubridate')) {
   install.packages('lubridate')  # install the package
   library(lubridate)  # Attach the package
 }</code></pre>
-<p>Next we set the working directory (wd). This is the absolute filepath in your machine in which all the files exist, and where data will be downloaded. Relative file paths will begin at the working directory.</p>
-<p>Here I have used the R function <code>getwd()</code> to obtain the default working directory from your R session. This is primaraly used to make sharing this script easier and more convenient, but it is highly recommended that you change the var <code>dir.string</code> to an absolute file path representing your preferred file location, as this will be used extensively while downloading and managing your PRISM data.</p>
+<p>Next we set the working directory (wd). This is the absolute file path in your machine in which all the files exist, and where data will be downloaded. Relative file paths will begin at the working directory.</p>
+<p>Here I have used the R function <code>getwd()</code> to obtain the default working directory from your R session. This is primarily used to make sharing this script easier and more convenient, but it is highly recommended that you change the var <code>dir.string</code> to an absolute file path representing your preferred file location, as this will be used extensively while downloading and managing your PRISM data.</p>
 <pre><code># Set Working Directory (wd)
 dir.string &lt;- getwd()  # Update with directory string as needed!
 setwd(dir.string)
@@ -200,12 +200,12 @@ dir.create("Data")  # Ignore warning if dir already exists
 
 # Assign prism download directory
 # Use the paste() function to concatenate the full file path
-# Use full directory path for more rhobust code (less error prone)
+# Use full directory path for more robust code (less error prone)
 prism_set_dl_dir(paste(dir.string, "Data", sep = "/"))</code></pre>
 </section>
 <section id="defining-variables-of-interest" class="level3" data-number="2.3">
 <h3 data-number="2.3" class="anchored" data-anchor-id="defining-variables-of-interest"><span class="header-section-number">2.3</span> Defining variables of interest</h3>
-<p>Now that we have set up our directory, we next have to define the date range and variables of interest. Here I have defined a date range and set of variables for this tutorial, but in the future, this will be the section of code which you will primaraly be responsible for updating to suit the needs of your project.</p>
+<p>Now that we have set up our directory, we next must define the date range and variables of interest. Here I have defined a date range and set of variables for this tutorial, but in the future, this will be the section of code which you will primarily be responsible for updating to suit the needs of your project.</p>
 <section id="setting-a-date-range" class="level4" data-number="2.3.1">
 <h4 data-number="2.3.1" class="anchored" data-anchor-id="setting-a-date-range"><span class="header-section-number">2.3.1</span> Setting a date range</h4>
 <p>At minimum, a date range is required for data to download. Depending on the data set that you are interested in, some PRISM records extend back as far as 1895, and new data is typically made available in near real time. Here we will look for data from the beginning of 2020 through 2022.</p>
@@ -219,15 +219,15 @@ months &lt;- c(4:7)  # Numeric list, not strings!</code></pre>
 </section>
 <section id="setting-temporal-resolution" class="level4" data-number="2.3.2">
 <h4 data-number="2.3.2" class="anchored" data-anchor-id="setting-temporal-resolution"><span class="header-section-number">2.3.2</span> Setting temporal resolution</h4>
-<p>PRISM data is available at a four temporal scales, daily, monthly, annual, and 30-year normals. While you are free to experiment with the prism functions <code>get_prism_dailys()</code>, <code>get_prism_monthlys()</code>, <code>get_prism_annual()</code>, and <code>get_prism_normals()</code> the scripts included with this tutorial have already set up the functions so that you can quickly and eficiently get the data you need with a minimum number of changes.</p>
-<p>Some things to consider at this point, firstly, in some instances you may want a dis-continuous data set, such as dialy observations for the month of July from 1999 to 2020. Unfortunately none of these scripts are currently able to accept a dis-continusous date range. Your choices are to either download the full continuous dataset and subset the data after it has been downloaded, break the dataset into smaller blocks of continuous dates and run multiple times, or write your own custom script for handling date breaks. Also, the way that I have written the <code>get_prism_monthlys()</code> and <code>get_prism_normals()</code> functions may sometimes result in unexpected behavior, depending on the <code>min.date</code> and <code>max.date</code> provided. In short, the function extracts the year from the date variables, and the rest of the date bounds are disregarded. Therefore you may get more data than you expect, but the error will always be inclusive (as opposed to not downloading requested data).</p>
+<p>PRISM data is available at four temporal scales, daily, monthly, annual, and 30-year normals. While you are free to experiment with the prism functions <code>get_prism_dailys()</code>, <code>get_prism_monthlys()</code>, <code>get_prism_annual()</code>, and <code>get_prism_normals()</code> the scripts included with this tutorial have already set up the functions so that you can quickly and efficiently get the data you need with a minimum number of changes.</p>
+<p>Some things to consider at this point, firstly, in some instances you may want a dis-continuous data set, such as daily observations for the month of July from 1999 to 2020. Unfortunately, none of these scripts are currently able to accept a dis-continuous date range. Your choices are to either download the full continuous dataset and subset the data after it has been downloaded, break the dataset into smaller blocks of continuous dates and run multiple times, or write your own custom script for handling date breaks. Also, the way that I have written the <code>get_prism_monthlys()</code> and <code>get_prism_normals()</code> functions may sometimes result in unexpected behavior, depending on the <code>min.date</code> and <code>max.date</code> provided. In short, the function extracts the year from the date variables, and the rest of the date bounds are disregarded. Therefore, you may get more data than you expect, but the error will always be inclusive (as opposed to not downloading requested data).</p>
 <pre><code># Define temporal resolution
 # tRes must be one of "dailys", "monthlys", "annual", "normals"
 tRes &lt;- "monthlys"</code></pre>
 </section>
-<section id="setting-the-climtic-variables" class="level4" data-number="2.3.3">
-<h4 data-number="2.3.3" class="anchored" data-anchor-id="setting-the-climtic-variables"><span class="header-section-number">2.3.3</span> Setting the climtic variables</h4>
-<p>There are 11 climactic variables available through PRISM, of which seven are available through the api. These are precipitation (ppt), mean temperature (tmean), minimum temperature (tmin), maximum temperature (tmax), mean dew point temperature (tdmean), minimum vapor pressure deficit (vpdmin), and maximum vapor pressure deficit (vpdmax). Any combination of these variables may be assigned to the <code>prismVars</code> variable, and all of the requested climactic data will be downloaded.</p>
+<section id="setting-the-climatic-variables" class="level4" data-number="2.3.3">
+<h4 data-number="2.3.3" class="anchored" data-anchor-id="setting-the-climatic-variables"><span class="header-section-number">2.3.3</span> Setting the climatic variables</h4>
+<p>There are 11 climactic variables available through PRISM, of which seven are available through the api. These are precipitation (ppt), mean temperature (tmean), minimum temperature (tmin), maximum temperature (tmax), mean dew point temperature (tdmean), minimum vapor pressure deficit (vpdmin), and maximum vapor pressure deficit (vpdmax). Any combination of these variables may be assigned to the <code>prismVars</code> variable, and all the requested climactic data will be downloaded.</p>
 <pre><code># Define data variables
 # Must be one (or several) of "ppt", "tmean", "tmin", "tmax", "tdmean", "vpdmin", "vpdmax"
 # Use c("var1", "var2", etc...) for multiple variables
@@ -247,7 +247,7 @@ if (tRes != "dailys" &amp; tRes != "monthlys" &amp; tRes != "annual" &amp; tRes 
   stop('tRes must be one of "dailys", "monthlys", "annual", or "normals". Please ensure your variable is set correctly.')
 }</code></pre>
 <p>Next, to avoid potentially costly user errors an if statement is called so that only the data of interest is downloaded. This way all of the prism <code>get_prism_...()</code> functions can be prebuilt and live inside our script, enabling us to work quickly, but (hopefully) preventing us from running the wrong function and ending up with way too much data. Here I am only showing the <code>get_prism_monthlies()</code> function which we are interested in. See the full prism.R script accompanying this tutorial to see how all the functions are defined.</p>
-<p>Depending on the amount of data requested this function may take from seconds to hours. It includes several convienint progress statements, and is nested inside a timing function. This small example should take about 35 seconds to complete.</p>
+<p>Depending on the amount of data requested this function may take from seconds to hours. It includes several convenient progress statements, and is nested inside a timing function. This small example should take about 35 seconds to complete.</p>
 <pre><code># If tRes is "monthlys"
 # Monthlies ----
 if (tRes == "monthlys") {
@@ -257,7 +257,7 @@ if (tRes == "monthlys") {
       # If exists() = TRUE
       months &lt;- months  # Use months as defined
     } else {
-      months &lt;- c(1:12) # else, default to all months of the year.
+      months &lt;- c(1:12)  # else, default to all months of the year.
     }
     # For each prism climactic variable in list of prismVars
     for (prismVar in prismVars) {
@@ -269,7 +269,7 @@ if (tRes == "monthlys") {
                          # Generate a regular sequence from min year to max year
                          years = year(seq(as.Date(min.Date), as.Date(max.Date), by="years")),
                          mon = months,  # Months to download
-                         keepZip = F) #delete zip folders
+                         keepZip = F)  #delete zip folders
       
     } # end for prismVar in prismVars
   }) # end system.time
@@ -277,7 +277,7 @@ if (tRes == "monthlys") {
 </section>
 <section id="sec-rawData" class="level3" data-number="2.5">
 <h3 data-number="2.5" class="anchored" data-anchor-id="sec-rawData"><span class="header-section-number">2.5</span> Checking the raw data</h3>
-<p>At this point all of your data should have downloaded into the “Data” folder. You can check on your files using the file explorer (or finder on Mac). We will use a custom function to check our files programmatically and return the total size of files in our directory, this will also allow us to quantify the storage savings after we have cropped our files in <a href="#sec-cropData" class="quarto-xref">Section&nbsp;3.4</a>.</p>
+<p>At this point all your data should have downloaded into the “Data” folder. You can check on your files using the file explorer (or finder on Mac). We will use a custom function to check our files programmatically and return the total size of files in our directory, this will also allow us to quantify the storage savings after we have cropped our files in <a href="#sec-cropData" class="quarto-xref">Section&nbsp;3.4</a>.</p>
 <pre><code># Optional: Check size of downloaded data
 dir_size &lt;- function(path, recursive = TRUE) {
   stopifnot(is.character(path))
@@ -294,12 +294,12 @@ cat(paste("Data folder size on disk =", rawDataSize, "MB", sep = " "))</code></p
 </section>
 <section id="sec-terra" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="sec-terra"><span class="header-section-number">3</span> Cropping PRISM data to study area</h2>
-<p>So far we have been working primaraly with the prism package, and have succeeded in connecting to the PRISM api and efficiently downloading data in bulk. However, this could arguably have been achieved just as efficiently by simply calling the required function from the prism package, without all the extraneous setup. Here we will extend the useful application of the prism package by incorporating functions from the terra package <span class="citation" data-cites="terra">[<a href="#ref-terra" role="doc-biblioref">4</a>]</span> to crop the data to a study area, thereby saving ourselves from the enormous data storage costs of maintaining nation wide datasets, when we are only interested in a small region.</p>
-<p>In our example we will look at Maricopa county, AZ.</p>
+<p>So far, we have been working primarily with the prism package, and have succeeded in connecting to the PRISM api and efficiently downloading data in bulk. However, this could arguably have been achieved just as efficiently by simply calling the required function from the prism package. Here we will extend the useful application of the prism package by incorporating functions from the terra package <span class="citation" data-cites="terra">[<a href="#ref-terra" role="doc-biblioref">4</a>]</span> to crop the data to a study area, thereby saving ourselves from the enormous data storage costs of maintaining nationwide datasets, when we are only interested in a small region.</p>
+<p>In our example we will look at Maricopa County, AZ.</p>
 <section id="setup-1" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="setup-1"><span class="header-section-number">3.1</span> Setup</h3>
-<p>While contained within the same script for convenience, the code presented in this section is independent from the code presented in <a href="#sec-prism" class="quarto-xref">Section&nbsp;2</a>. You may continue in your R session, or may restart your R session as desired.</p>
-<p>Lets begin by loading the terra package.</p>
+<p>While contained within the same script for convenience, the code presented in this section is independent from the code presented in <a href="#sec-prism" class="quarto-xref">Section&nbsp;2</a>. You may continue in your R session or may restart your R session as desired.</p>
+<p>Let’s begin by loading the terra package.</p>
 <pre><code># Packages
 # "terra" package for working with geospatial datasets
 if(!require('terra')) {  # if package is not available, require() returns FALSE
@@ -310,7 +310,7 @@ if(!require('terra')) {  # if package is not available, require() returns FALSE
 <section id="exploring-the-data" class="level3" data-number="3.2">
 <h3 data-number="3.2" class="anchored" data-anchor-id="exploring-the-data"><span class="header-section-number">3.2</span> Exploring the data</h3>
 <p>While we could jump straight into the automated data processing, it is generally a good idea to take a moment to explore your data prior to bulk processing. This will also afford us the opportunity to briefly explore some of the functions of terra <span class="citation" data-cites="tera">[<a href="#ref-tera" role="doc-biblioref"><strong>tera?</strong></a>]</span>, a massively useful package for geospatial data analysis in R!</p>
-<p>First, lets just load in a representative data folder, and a raster file. Here I will be using a regular expression (regex) for pattern matching. Regex is largely beyond the scope of this tutorial, but it a wildly useful programmatic tool for advanced users. I will do my best to include plain language explanations for all my regex patterns, but for those who are interested to learn more I highly recommend reading this <a href="https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html">vignette</a> on cran.</p>
+<p>First, let’s just load in a representative data folder, and a raster file. Here I will be using a regular expression (regex) for pattern matching. Regex is largely beyond the scope of this tutorial, but it is a wildly useful programmatic tool for advanced users. I will do my best to include plain language explanations for all my regex patterns, but for those who are interested in learning more I highly recommend reading this <a href="https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html">vignette</a> on cran.</p>
 <pre><code># Locate Raster files, "bil" extension.
 folder1 &lt;- list.files("Data")[1] # Select first data folder in download directory
 file1 &lt;- list.files(paste("Data", folder1, sep = "/"), 
@@ -333,7 +333,7 @@ plot(rast1, main = name)  # Check if data loaded correctly</code></pre>
 <h4 data-number="3.2.2" class="anchored" data-anchor-id="loading-vector-data"><span class="header-section-number">3.2.2</span> Loading vector data</h4>
 <p>Similar to loading raster data, vector data can be loaded very simply using the terra <code>vect()</code> function. The resulting vector data is a “spatVect” object. When loading shapefiles, which consist of several related files in a standard structure, only the .shp file needs to be called, however any missing files not present in the given shapefile directory may cause unexpected errors.</p>
 <pre><code># Load shapefile for clipping data extent
-# Example = Maricopa county, AZ
+# Example = Maricopa County, AZ
 shp_path &lt;- list.files("Shapefile",  # Relative file path
                       # pattern = regex, ".shp" at end of string.
                       pattern = ".shp$",  
@@ -345,7 +345,7 @@ plot(shp)  # Check if data loaded correctly</code></pre>
 <section id="data-projections" class="level4" data-number="3.2.3">
 <h4 data-number="3.2.3" class="anchored" data-anchor-id="data-projections"><span class="header-section-number">3.2.3</span> Data projections</h4>
 <p><strong>IMPORTANT!</strong> Geospatial data projections are a complex and highly technical field, related to the 2-dimensional representation of 3-dimensional objects. While I will refrain from a long tangent on map projections, suffice to say that projections are critical for mapping as well as ensuring accurate measurements. Unlike other commercial GIS software, terra will not perform “on the fly” projections, so all geospatial data must use a similar projection to be mapped appropriately.</p>
-<p>Here we will use an Arizona State Plane, Central (ft, EPSG:2223), which is appropriate for Maricopa county, AZ. For future projects discuss appropriate data projections with your project lead or GIS manager. See https://epsg.io/ to query EPSG codes for your desired projection.</p>
+<p>Here we will use an Arizona State Plane, Central (ft, EPSG:2223), which is appropriate for Maricopa County, AZ. For future projects discuss appropriate data projections with your project leader or GIS manager. See https://epsg.io/ to query EPSG codes for your desired projection.</p>
 <pre><code># Project Data
 # IMPORTANT!
 # Data projections control the planar (2d) shape of your map, projected from a spherical
@@ -375,7 +375,7 @@ rast1 &lt;- project(rast1, crs(shp))
 crs(shp)
 crs(rast1)
 # setequal(shp, rast1)  # I am not sure why this is returning F, but the projections are matching...</code></pre>
-<p>Now that we have set our data projection we can map our data layers together on a single map. First we will map the full PRISM dataset covering the whole contiguous US, adding Maricopa county on top of our base layer.</p>
+<p>Now that we have set our data projection we can map our data layers together on a single map. First, we will map the full PRISM dataset covering the whole contiguous US, adding Maricopa county on top of our base layer.</p>
 <pre><code># Check projections and layer alignment
 plot(rast1, main = name)  # USA will look skewed in "Arizona Central" projection
 plot(shp, add = T)  # Shape will appear small on USA map, position should be correct
@@ -384,7 +384,7 @@ plot(shp, add = T)  # Shape will appear small on USA map, position should be cor
 # Depending on the background color and size of your study area your shapefile may be 
 #   difficult to see at this stage.</code></pre>
 <p>Notice how strange the US looks in this projection? This is because our projection is optimized for central AZ. It is highly accurate in that area, and the further away from that region the data is, the more skewed the data becomes.</p>
-<p>Now lets map the data using only the extent of our shapefile, but without croping the data layer. This is equivalent of setting the x and y scales in a typical scatterplot, without modifying the underlying data.</p>
+<p>Now let’s map the data using only the extent of our shapefile, but without cropping the data layer. This is equivalent of setting the x and y scales in a typical scatterplot, without modifying the underlying data.</p>
 <pre><code># Define study area extent, plot
 e &lt;- ext(shp)  # extent of your shapefile
 # Plot PRISM raster with limited extent
@@ -394,7 +394,7 @@ plot(shp, add = T)
 </section>
 <section id="crop-the-data" class="level4" data-number="3.2.4">
 <h4 data-number="3.2.4" class="anchored" data-anchor-id="crop-the-data"><span class="header-section-number">3.2.4</span> Crop the data</h4>
-<p>Now that we have set our projection and we have an extent that we are happy with we can crop our data layer.</p>
+<p>Now that we have set our projection, and we have an extent that we are happy with we can crop our data layer.</p>
 <pre><code># Crop raster, plot
 rast_crop &lt;- crop(rast1, 1.05 * e)  # Add 5% margin to extent to avoid clipping vertices
 plot(rast_crop, main = name)
@@ -412,12 +412,12 @@ writeRaster(rast_crop, filename = "Output/test_case.tif",
 </section>
 <section id="automated-data-processing" class="level3" data-number="3.3">
 <h3 data-number="3.3" class="anchored" data-anchor-id="automated-data-processing"><span class="header-section-number">3.3</span> Automated data processing</h3>
-<p>In this section we will use some complex logic to bulk process all of the data files in our “Data” folder. The raster files will be reprojected and cropped to our area of interest, and the outputs will be saved in the “Output” folder, while preserving all of the PRISM data file naming conventions and file tree. All metadata will be copied to the new directory, and (optionally) the raw data will be erased.</p>
-<p>While it is recommended that the PRISM raw data files are deleted, the data files may not be recoverable through the recycling bin. Therefore, <strong>please be sure that you do not need to retain the raw data before proceeding, as repreated downloading of data from the PRISM api may not be possible</strong>.</p>
+<p>In this section we will use some complex logic to bulk process all the data files in our “Data” folder. The raster files will be reprojected and cropped to our area of interest, and the outputs will be saved in the “Output” folder, while preserving all the PRISM data file naming conventions and file tree. All metadata will be copied to the new directory, and (optionally) the raw data will be erased.</p>
+<p>While it is recommended that the PRISM raw data files are deleted, the data files may not be recoverable through the recycling bin. Therefore, <strong>please be sure that you do not need to retain the raw data before proceeding, as repeated downloading of data from the PRISM api may not be possible</strong>.</p>
 <pre><code># Optional vars
 retainRaw &lt;- F  # Keep raw data (full USA extent)?</code></pre>
 <pre><code># Crop all Datasets ----
-# Now that we have explored our data and tested our algorithm we can automate the cropping
+# Now that we have explored our data and tested our algorithm, we can automate the cropping
 #   of all the remaining files.
 # Setup
 # list directories
@@ -444,17 +444,17 @@ system.time({  # Timing function
       # If file is .bil (raster data)
       if (grepl("bil.bil$", file) == T) {
         # Process raster data
-        r &lt;- rast(paste(dir, file, sep = "/")) # load raster data
-        r_proj &lt;- project(r, projection) # project
-        r_crop &lt;- crop(r_proj, ext(1.05 * ext(shp))) # crop
+        r &lt;- rast(paste(dir, file, sep = "/"))  # load raster data
+        r_proj &lt;- project(r, projection)  # project
+        r_crop &lt;- crop(r_proj, ext(1.05 * ext(shp)))  # crop
 
         # Write cropped raster data
         # Preserve file structure and naming conventions from PRISM
         writeRaster(r_crop, 
           filename = paste("Output/", name, "/", name, ".bil", sep = ""), 
           filetype = "EHdr",  # Esri .bil format
-          overwrite = T)  # Enable overwriteing
-      } else {  # File metadata
+          overwrite = T)  # Enable overwriting
+      } else {  # Metadata files
         metadataFile = list.files(dir, pattern = file, full.names = T)
         # Copy metadata into output dir)
         file.copy(metadataFile,
@@ -483,8 +483,8 @@ cat(paste("Space saved on disk by cropping files =", storageSaved, "MB", sep = "
 </section>
 <section id="conclusions" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">4</span> Conclusions</h2>
-<p>In this simple example I have shown you how to efficiently download bulk climactic data from the PRISM api using the prism R package. I also briefly introduced the terra package, and showed you how to explore and map geospatial data. Then we used a simple code block to automate the bulk processing of raw data for our area of interest, saving ~80% of file storage requirements.</p>
-<p>Hopefully by now you feel confident in being able to apply these methods to your own study area. By updating the shapefile, and modifying a few key variables you can efficiently acquire climactic data for a broad range of applications anywhere in the contiguous US. Using the R script accompanying this tutorial you can wow your supervisors and be the envy of your peers with how simply and efficiently you are able to access the data you need.</p>
+<p>In this simple example I have shown you how to efficiently download bulk climactic data from the PRISM api using the prism R package. I also briefly introduced the terra package and showed you how to explore and map geospatial data. Then we used a simple code block to automate the bulk processing of raw data for our area of interest, saving ~80% of file storage requirements.</p>
+<p>Hopefully by now you feel confident in being able to apply these methods to your own study area. By updating the shapefile and modifying a few key variables you can efficiently acquire climactic data for a broad range of applications anywhere in the contiguous US. Using the R script accompanying this tutorial you can wow your supervisors and be the envy of your peers with how simply and efficiently you are able to access the data you need.</p>
 <section id="get-the-code" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="get-the-code"><span class="header-section-number">4.1</span> Get the code</h3>
 <p>Access the full R script used in this tutorial <a href="https://github.com/travisz09/PRISM/tree/main/R-Script">here</a>.</p>
