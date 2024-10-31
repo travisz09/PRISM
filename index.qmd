@@ -9,7 +9,7 @@ bibliography: references.bib
 csl: diabetologia.csl
 number-sections: true
 execute:
-  echo: fenced
+  echo: true
 format:
   html:
     code-copy: true
