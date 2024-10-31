@@ -84,7 +84,7 @@ draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-
   Depending on the project, storing a large number of rasters for the
   whole US may be unnecessary and could massively increase data storage
   costs. Originally developed for a research project covering the
-  Phoenix Metro. area this script is designed to work with a shapefile
+  Phoenix metro area this script is designed to work with a shapefile
   defining the area of interest, and includes a variety of functions
   which will iteratively (1) download the requested data file from
   PRISM, (2) clip the data to the study area, and (3) save the output
