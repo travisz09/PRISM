@@ -1,5 +1,5 @@
 ---
-title: Working with PRISM data
+title: Working with PRISM data in R
 authors:
   - name: Travis Zalesky
     affiliation: The University of Arizona
