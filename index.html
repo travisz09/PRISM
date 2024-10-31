@@ -6,12 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Travis Zalesky">
-<meta name="author" content="Rowan Cockett">
-<meta name="dcterms.date" content="2024-10-31">
-<meta name="keywords" content="La Palma, Earthquakes">
 
-<title>La Palma Earthquake Mechanisms</title>
+<title>Working with PRISM data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -46,7 +42,7 @@ div.csl-indent {
 }</style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -56,61 +52,17 @@ div.csl-indent {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-3a9e258889b7bd05a290659f0589226b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script async="" src="https://hypothes.is/embed.js"></script>
 <script>
   window.document.addEventListener("DOMContentLoaded", function (_event) {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<meta name="citation_title" content="La Palma Earthquake Mechanisms">
-<meta name="citation_abstract" content="In September 2021, a significant jump in seismic activity on the island of La Palma (Canary Islands, Spain) signaled the start of a volcanic crisis that still continues at the time of writing. Earthquake data is continually collected and published by the Instituto Geográphico Nacional (IGN). ...
-">
-<meta name="citation_keywords" content="La Palma,Earthquakes">
+<meta name="citation_title" content="Working with PRISM data">
 <meta name="citation_author" content="Travis Zalesky">
-<meta name="citation_author" content="Rowan Cockett">
-<meta name="citation_publication_date" content="2024-10-31">
-<meta name="citation_cover_date" content="2024-10-31">
-<meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-10-31">
 <meta name="citation_language" content="en">
-<meta name="citation_journal_title" content="Earth and Space Science">
 <meta name="citation_reference" content="citation_title=Prism: Download data from the oregon prism project;,citation_author=Edmund M. Hart;,citation_author=Kendon Bell;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_fulltext_html_url=https://github.com/ropensci/prism;,citation_doi=10.5281/zenodo.33663;">
 <meta name="citation_reference" content="citation_title=Terra: Spatial data analysis;,citation_author=Robert J. Hijmans;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://CRAN.R-project.org/package=terra;">
 <meta name="citation_reference" content="citation_title=R: A language and environment for statistical computing;,citation_author=R Core Team;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://www.R-project.org/;">
@@ -122,7 +74,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">La Palma Earthquake Mechanisms</h1>
+      <h1 class="title">Working with PRISM data</h1>
           </div>
 
     
@@ -145,12 +97,6 @@ window.Quarto = {
         <div class="quarto-title-meta">
 
                       
-                <div>
-            <div class="quarto-title-meta-heading">Published</div>
-            <div class="quarto-title-meta-contents">
-              <p class="date">October 31, 2024</p>
-            </div>
-          </div>
           
                 
               </div>
@@ -159,19 +105,7 @@ window.Quarto = {
       </div>
     </div>
 
-    <div>
-      <div class="abstract">
-        <div class="block-title">Abstract</div>
-        <p>In September 2021, a significant jump in seismic activity on the island of La Palma (Canary Islands, Spain) signaled the start of a volcanic crisis that still continues at the time of writing. Earthquake data is continually collected and published by the Instituto Geográphico Nacional (IGN). …</p>
-      </div>
-    </div>
 
-    <div>
-      <div class="keywords">
-        <div class="block-title">Keywords</div>
-        <p>La Palma, Earthquakes</p>
-      </div>
-    </div>
 
     <div class="quarto-other-links-text-target">
     </div>  </div>
@@ -181,12 +115,28 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#sec-data-methods" id="toc-sec-data-methods" class="nav-link" data-scroll-target="#sec-data-methods"><span class="header-section-number">2</span> Data &amp; Methods</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">3</span> Conclusion</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract"><span class="header-section-number">1</span> Abstract</a>
+  <ul class="collapse">
+  <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives"><span class="header-section-number">1.1</span> Objectives</a></li>
+  </ul></li>
+  <li><a href="#sec-prism" id="toc-sec-prism" class="nav-link" data-scroll-target="#sec-prism"><span class="header-section-number">2</span> Downloading PRISM data</a>
+  <ul class="collapse">
+  <li><a href="#warning" id="toc-warning" class="nav-link" data-scroll-target="#warning"><span class="header-section-number">2.1</span> WARNING!</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">2.2</span> Setup</a></li>
+  <li><a href="#defining-variables-of-interest" id="toc-defining-variables-of-interest" class="nav-link" data-scroll-target="#defining-variables-of-interest"><span class="header-section-number">2.3</span> Defining variables of interest</a></li>
+  <li><a href="#downloading-the-data" id="toc-downloading-the-data" class="nav-link" data-scroll-target="#downloading-the-data"><span class="header-section-number">2.4</span> Downloading the data</a></li>
+  <li><a href="#sec-rawData" id="toc-sec-rawData" class="nav-link" data-scroll-target="#sec-rawData"><span class="header-section-number">2.5</span> Checking the raw data</a></li>
+  </ul></li>
+  <li><a href="#sec-terra" id="toc-sec-terra" class="nav-link" data-scroll-target="#sec-terra"><span class="header-section-number">3</span> Cropping PRISM data to study area</a>
+  <ul class="collapse">
+  <li><a href="#setup-1" id="toc-setup-1" class="nav-link" data-scroll-target="#setup-1"><span class="header-section-number">3.1</span> Setup</a></li>
+  <li><a href="#exploring-the-data" id="toc-exploring-the-data" class="nav-link" data-scroll-target="#exploring-the-data"><span class="header-section-number">3.2</span> Exploring the data</a></li>
+  <li><a href="#automated-data-processing" id="toc-automated-data-processing" class="nav-link" data-scroll-target="#automated-data-processing"><span class="header-section-number">3.3</span> Automated data processing</a></li>
+  <li><a href="#sec-cropData" id="toc-sec-cropData" class="nav-link" data-scroll-target="#sec-cropData"><span class="header-section-number">3.4</span> Checking the cropped data</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">4</span> Conclusions</a></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="Citations-preview.html"><i class="bi bi-journal-code"></i>Citations.md</a></li><li><a href="notebooks/data-screening-preview.html"><i class="bi bi-journal-code"></i>Data Screening</a></li></ul></div></nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="Citations-preview.html"><i class="bi bi-journal-code"></i>Citations.md</a></li><li><a href="notebooks/data-screening-preview.html"><i class="bi bi-journal-code"></i>Data Screening</a></li></ul></div></nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -197,126 +147,358 @@ window.Quarto = {
   
 
 
-<section id="introduction" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<div id="cell-fig-timeline" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div id="fig-timeline" class="quarto-float quarto-figure quarto-figure-center anchored" alt="An event plot of the years of the last 8 eruptions on La Palma.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/fig-timeline-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Timeline of recent earthquakes on La Palma"><img src="index_files/figure-html/fig-timeline-output-1.png" alt="An event plot of the years of the last 8 eruptions on La Palma." width="466" height="115" class="figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Timeline of recent earthquakes on La Palma
-</figcaption>
-</figure>
-</div>
-</div>
-<a class="quarto-notebook-link" id="nblink-1" href="index-preview.html#cell-fig-timeline">Source: Article Notebook</a></div>
-<p>Based on data up to and including 1971, eruptions on La Palma happen every 79.8 years on average.</p>
-<p>Studies of the magma systems feeding the volcano, such as <span class="citation" data-cites="marrero2019">[<a href="#ref-marrero2019" role="doc-biblioref"><strong>marrero2019?</strong></a>]</span>, have proposed that there are two main magma reservoirs feeding the Cumbre Vieja volcano; one in the mantle (30-40km depth) which charges and in turn feeds a shallower crustal reservoir (10-20km depth).</p>
-<p>Eight eruptions have been recorded since the late 1400s (<a href="#fig-timeline" class="quarto-xref">Figure&nbsp;1</a>).</p>
-<p>Data and methods are discussed in <a href="#sec-data-methods" class="quarto-xref">Section&nbsp;2</a>.</p>
-<p>Let <span class="math inline">\(x\)</span> denote the number of eruptions in a year. Then, <span class="math inline">\(x\)</span> can be modeled by a Poisson distribution</p>
-<p><span id="eq-poisson"><span class="math display">\[
-p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
-\tag{1}\]</span></span></p>
-<p>where <span class="math inline">\(\lambda\)</span> is the rate of eruptions per year. Using <a href="#eq-poisson" class="quarto-xref">Equation&nbsp;1</a>, the probability of an eruption in the next <span class="math inline">\(t\)</span> years can be calculated.</p>
-<div id="tbl-history" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-history-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Recent historic eruptions on La Palma
-</figcaption>
-<div aria-describedby="tbl-history-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Year</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Current</td>
-<td>2021</td>
-</tr>
-<tr class="even">
-<td>Teneguía</td>
-<td>1971</td>
-</tr>
-<tr class="odd">
-<td>Nambroque</td>
-<td>1949</td>
-</tr>
-<tr class="even">
-<td>El Charco</td>
-<td>1712</td>
-</tr>
-<tr class="odd">
-<td>Volcán San Antonio</td>
-<td>1677</td>
-</tr>
-<tr class="even">
-<td>Volcán San Martin</td>
-<td>1646</td>
-</tr>
-<tr class="odd">
-<td>Tajuya near El Paso</td>
-<td>1585</td>
-</tr>
-<tr class="even">
-<td>Montaña Quemada</td>
-<td>1492</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<p><a href="#tbl-history" class="quarto-xref">Table&nbsp;1</a> summarises the eruptions recorded since the colonization of the islands by Europeans in the late 1400s.</p>
-<div id="fig-map" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/la-palma-map.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Map of La Palma"><img src="images/la-palma-map.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Map of La Palma
-</figcaption>
-</figure>
-</div>
-<p>La Palma is one of the west most islands in the Volcanic Archipelago of the Canary Islands (<a href="#fig-map" class="quarto-xref">Figure&nbsp;2</a>).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-spatial-plot" class="cell" data-execution_count="7">
-<div class="cell-output cell-output-display">
-<div id="fig-spatial-plot" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A scatterplot of earthquake locations plotting latitude against longitude.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-spatial-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-data-screening-fig-spatial-plot-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Locations of earthquakes on La Palma since 2017."><img src="index_files/figure-html/notebooks-data-screening-fig-spatial-plot-output-1.png" alt="A scatterplot of earthquake locations plotting latitude against longitude." width="917" height="799" class="figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spatial-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Locations of earthquakes on La Palma since 2017.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p><a href="#fig-spatial-plot" class="quarto-xref">Figure&nbsp;3</a> shows the location of recent Earthquakes on La Palma.</p>
+<section id="abstract" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="abstract"><span class="header-section-number">1</span> Abstract</h2>
+<p>Parameter-elevation Regressions on Independent Slopes Model (PRISM) data is available from Oregon State University for a variety of common climate variables such as min/max temperature, precipitation, dew point etc. These datasets are extremely useful in a variety of research applications, and they can be conveniently accessed through the <a href="https://prism.oregonstate.edu/">PRISM website</a>, or they can be accessed programmatically through the data api using the R package <a href="https://cran.r-project.org/web/packages/prism/index.html">prism</a>.</p>
+<p>While the prism R package is great, the goal of this tutorial, and associated script, is to extend the prism package in an attempt to solve a common problem. PRISM data is delivered as a raster for the contiguous US (at 4Km or 800m resolution), when often only a much smaller extent is needed to answer the research question at hand. Depending on the project, storing a large number of rasters for the whole US may be unnecessary and could massively increase data storage costs. Originally developed for a research project covering the Phoenix metro area this script is designed to work with a shapefile defining the area of interest, and includes a variety of functions which will iteratively (1) download the requested data file from PRISM, (2) clip the data to the study area, and (3) save the output clipped raster, preserving all relevant metadata and file structure. The original (US extent) data files are then, optionally, deleted to save storage space.</p>
+<section id="objectives" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="objectives"><span class="header-section-number">1.1</span> Objectives</h3>
+<ol type="1">
+<li>Bulk download data from prism.oregonstate.edu.</li>
+<li>Crop data to a given study area using a shapefile.</li>
+<li>Save cropped data sets, preserve file metadata and .bil format.</li>
+<li>Delete raw data (optional).</li>
+</ol>
 </section>
-<section id="sec-data-methods" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-data-methods"><span class="header-section-number">2</span> Data &amp; Methods</h2>
 </section>
-<section id="conclusion" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">3</span> Conclusion</h2>
+<section id="sec-prism" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-prism"><span class="header-section-number">2</span> Downloading PRISM data</h2>
+<section id="warning" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="warning"><span class="header-section-number">2.1</span> WARNING!</h3>
+<p><strong>Repeated downloading of files from the PRISM api may result in sanctions, including blocking your IP address. Please be respectfull of these resources.</strong></p>
 </section>
-<section id="references" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
+<section id="setup" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">2.2</span> Setup</h3>
+<p>As with any R <span class="citation" data-cites="base_R">[<a href="#ref-base_R" role="doc-biblioref">1</a>]</span> script, we must first load the required packages. Initially we will utilize 2 packages, prism and lubridate. The prism <span class="citation" data-cites="prism">[<a href="#ref-prism" role="doc-biblioref">2</a>]</span> package is the primary R package for programmatically interacting with the PRISM api. Lubridate <span class="citation" data-cites="lubridate">[<a href="#ref-lubridate" role="doc-biblioref">3</a>]</span> is a package for working with dates, and will be used for its <code>years()</code> function.</p>
+<pre><code> Setup ----
+# Packages
+# Check if packages are installed, if not downlowad
+# PRISM api package 'prism'
+if(!require('prism')) {  
+  # if package is not available, require() returns FALSE
+  install.packages('prism')  # install the package
+  library(prism)  # Attach the package
+}
+# Working with dates 'lubridate', required for year() function
+if(!require('lubridate')) {  
+  # if package is not available, require() returns FALSE
+  install.packages('lubridate')  # install the package
+  library(lubridate)  # Attach the package
+}</code></pre>
+<p>Next we set the working directory (wd). This is the absolute filepath in your machine in which all the files exist, and where data will be downloaded. Relative file paths will begin at the working directory.</p>
+<p>Here I have used the R function <code>getwd()</code> to obtain the default working directory from your R session. This is primaraly used to make sharing this script easier and more convenient, but it is highly recommended that you change the var <code>dir.string</code> to an absolute file path representing your preferred file location, as this will be used extensively while downloading and managing your PRISM data.</p>
+<pre><code># Set Working Directory (wd)
+dir.string &lt;- getwd()  # Update with directory string as needed!
+setwd(dir.string)
+getwd()  # Check wd</code></pre>
+<p>Next we will create a new folder in our wd called “Data”, and set it as the default data download directory for the PRISM api using the <code>prism_set_dl_dir()</code> function.</p>
+<pre><code># Create Data folder in wd
+dir.create("Data")  # Ignore warning if dir already exists
 
-</div>
+# Assign prism download directory
+# Use the paste() function to concatenate the full file path
+# Use full directory path for more rhobust code (less error prone)
+prism_set_dl_dir(paste(dir.string, "Data", sep = "/"))</code></pre>
+</section>
+<section id="defining-variables-of-interest" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="defining-variables-of-interest"><span class="header-section-number">2.3</span> Defining variables of interest</h3>
+<p>Now that we have set up our directory, we next have to define the date range and variables of interest. Here I have defined a date range and set of variables for this tutorial, but in the future, this will be the section of code which you will primaraly be responsible for updating to suit the needs of your project.</p>
+<section id="setting-a-date-range" class="level4" data-number="2.3.1">
+<h4 data-number="2.3.1" class="anchored" data-anchor-id="setting-a-date-range"><span class="header-section-number">2.3.1</span> Setting a date range</h4>
+<p>At minimum, a date range is required for data to download. Depending on the data set that you are interested in, some PRISM records extend back as far as 1895, and new data is typically made available in near real time. Here we will look for data from the beginning of 2020 through 2022.</p>
+<pre><code># Define date range
+min.Date &lt;- "2020-01-01"
+max.Date &lt;- "2022-12-31"
+# For the most up to date data available, use max.Date &lt;- lubridate::today()</code></pre>
+<p>Additionally, in some instances you may only be interested in a certain months of the year. You may optionally set a range of months here. If no months are defined, the default behavior will be to download all months of the year (if applicable). In this example we will only look at data from April to July (4 to 7).</p>
+<pre><code># Optional: list of months to download for the get_prism_monthlies() function
+months &lt;- c(4:7)  # Numeric list, not strings!</code></pre>
+</section>
+<section id="setting-temporal-resolution" class="level4" data-number="2.3.2">
+<h4 data-number="2.3.2" class="anchored" data-anchor-id="setting-temporal-resolution"><span class="header-section-number">2.3.2</span> Setting temporal resolution</h4>
+<p>PRISM data is available at a four temporal scales, daily, monthly, annual, and 30-year normals. While you are free to experiment with the prism functions <code>get_prism_dailys()</code>, <code>get_prism_monthlys()</code>, <code>get_prism_annual()</code>, and <code>get_prism_normals()</code> the scripts included with this tutorial have already set up the functions so that you can quickly and eficiently get the data you need with a minimum number of changes.</p>
+<p>Some things to consider at this point, firstly, in some instances you may want a dis-continuous data set, such as dialy observations for the month of July from 1999 to 2020. Unfortunately none of these scripts are currently able to accept a dis-continusous date range. Your choices are to either download the full continuous dataset and subset the data after it has been downloaded, break the dataset into smaller blocks of continuous dates and run multiple times, or write your own custom script for handling date breaks. Also, the way that I have written the <code>get_prism_monthlys()</code> and <code>get_prism_normals()</code> functions may sometimes result in unexpected behavior, depending on the <code>min.date</code> and <code>max.date</code> provided. In short, the function extracts the year from the date variables, and the rest of the date bounds are disregarded. Therefore you may get more data than you expect, but the error will always be inclusive (as opposed to not downloading requested data).</p>
+<pre><code># Define temporal resolution
+# tRes must be one of "dailys", "monthlys", "annual", "normals"
+tRes &lt;- "monthlys"</code></pre>
+</section>
+<section id="setting-the-climtic-variables" class="level4" data-number="2.3.3">
+<h4 data-number="2.3.3" class="anchored" data-anchor-id="setting-the-climtic-variables"><span class="header-section-number">2.3.3</span> Setting the climtic variables</h4>
+<p>There are 11 climactic variables available through PRISM, of which seven are available through the api. These are precipitation (ppt), mean temperature (tmean), minimum temperature (tmin), maximum temperature (tmax), mean dew point temperature (tdmean), minimum vapor pressure deficit (vpdmin), and maximum vapor pressure deficit (vpdmax). Any combination of these variables may be assigned to the <code>prismVars</code> variable, and all of the requested climactic data will be downloaded.</p>
+<pre><code># Define data variables
+# Must be one (or several) of "ppt", "tmean", "tmin", "tmax", "tdmean", "vpdmin", "vpdmax"
+# Use c("var1", "var2", etc...) for multiple variables
+prismVars &lt;- c("ppt", "tdmean")
+# Missing variables not available through the PRISM api = 
+#   "Soltotal", "Solslope", "Solclear", "Soltrans"</code></pre>
+</section>
+</section>
+<section id="downloading-the-data" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="downloading-the-data"><span class="header-section-number">2.4</span> Downloading the data</h3>
+<p>Now that we have defined the data to download, we can execute the prism functions to connect to the api and commence data downloading. But first we will run a couple of simple checks.</p>
+<p>To make sure that the <code>tRes</code> variable is set correctly we will check it against a list. If an issue is detected it will return a custom error message which will warn the user to double check their work.</p>
+<pre><code># Check if temporal resolution (tRes) is set correctly.
+# If tRes not in list
+if (tRes != "dailys" &amp; tRes != "monthlys" &amp; tRes != "annual" &amp; tRes != "normals") {
+  # Print a custom error message
+  stop('tRes must be one of "dailys", "monthlys", "annual", or "normals". Please ensure your variable is set correctly.')
+}</code></pre>
+<p>Next, to avoid potentially costly user errors an if statement is called so that only the data of interest is downloaded. This way all of the prism <code>get_prism_...()</code> functions can be prebuilt and live inside our script, enabling us to work quickly, but (hopefully) preventing us from running the wrong function and ending up with way too much data. Here I am only showing the <code>get_prism_monthlies()</code> function which we are interested in. See the full prism.R script accompanying this tutorial to see how all the functions are defined.</p>
+<p>Depending on the amount of data requested this function may take from seconds to hours. It includes several convienint progress statements, and is nested inside a timing function. This small example should take about 35 seconds to complete.</p>
+<pre><code># If tRes is "monthlys"
+# Monthlies ----
+if (tRes == "monthlys") {
+  system.time({ #Timing function.
+    # Check if var "months" is defined
+    if (exists("months")) {
+      # If exists() = TRUE
+      months &lt;- months  # Use months as defined
+    } else {
+      months &lt;- c(1:12) # else, default to all months of the year.
+    }
+    # For each prism climactic variable in list of prismVars
+    for (prismVar in prismVars) {
+      print(prismVar)  # Print the current variable
+      # Use the prism::get_prism_monthlys() function to connect to the PRISM api
+      get_prism_monthlys(type = prismVar, # dataset to be downloaded
+                         # Date range
+                         # Use lubridate::years() function to extract the year from the min/max date vars
+                         # Generate a regular sequence from min year to max year
+                         years = year(seq(as.Date(min.Date), as.Date(max.Date), by="years")),
+                         mon = months,  # Months to download
+                         keepZip = F) #delete zip folders
+      
+    } # end for prismVar in prismVars
+  }) # end system.time
+}</code></pre>
+</section>
+<section id="sec-rawData" class="level3" data-number="2.5">
+<h3 data-number="2.5" class="anchored" data-anchor-id="sec-rawData"><span class="header-section-number">2.5</span> Checking the raw data</h3>
+<p>At this point all of your data should have downloaded into the “Data” folder. You can check on your files using the file explorer (or finder on Mac). We will use a custom function to check our files programmatically and return the total size of files in our directory, this will also allow us to quantify the storage savings after we have cropped our files in <a href="#sec-cropData" class="quarto-xref">Section&nbsp;3.4</a>.</p>
+<pre><code># Optional: Check size of downloaded data
+dir_size &lt;- function(path, recursive = TRUE) {
+  stopifnot(is.character(path))
+  files &lt;- list.files(path, full.names = T, recursive = recursive)
+  vect_size &lt;- sapply(files, function(x) file.size(x))
+  size_files &lt;- sum(vect_size)
+  size_files  # return file size in bytes
+}
+rawDataSize &lt;- dir_size("Data")/10**6  # bytes to MB
+# Print statement
+cat(paste("Data folder size on disk =", rawDataSize, "MB", sep = " "))</code></pre>
+<p>Approximate size of files on disk = 105 MB.</p>
+</section>
+</section>
+<section id="sec-terra" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-terra"><span class="header-section-number">3</span> Cropping PRISM data to study area</h2>
+<p>So far we have been working primaraly with the prism package, and have succeeded in connecting to the PRISM api and efficiently downloading data in bulk. However, this could arguably have been achieved just as efficiently by simply calling the required function from the prism package, without all the extraneous setup. Here we will extend the useful application of the prism package by incorporating functions from the terra package <span class="citation" data-cites="terra">[<a href="#ref-terra" role="doc-biblioref">4</a>]</span> to crop the data to a study area, thereby saving ourselves from the enormous data storage costs of maintaining nation wide datasets, when we are only interested in a small region.</p>
+<p>In our example we will look at Maricopa county, AZ.</p>
+<section id="setup-1" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="setup-1"><span class="header-section-number">3.1</span> Setup</h3>
+<p>While contained within the same script for convenience, the code presented in this section is independent from the code presented in <a href="#sec-prism" class="quarto-xref">Section&nbsp;2</a>. You may continue in your R session, or may restart your R session as desired.</p>
+<p>Lets begin by loading the terra package.</p>
+<pre><code># Packages
+# "terra" package for working with geospatial datasets
+if(!require('terra')) {  # if package is not available, require() returns FALSE
+  install.packages('terra')  # install the package
+  library(terra)  # Attach the package
+}</code></pre>
+</section>
+<section id="exploring-the-data" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="exploring-the-data"><span class="header-section-number">3.2</span> Exploring the data</h3>
+<p>While we could jump straight into the automated data processing, it is generally a good idea to take a moment to explore your data prior to bulk processing. This will also afford us the opportunity to briefly explore some of the functions of terra <span class="citation" data-cites="tera">[<a href="#ref-tera" role="doc-biblioref"><strong>tera?</strong></a>]</span>, a massively useful package for geospatial data analysis in R!</p>
+<p>First, lets just load in a representative data folder, and a raster file. Here I will be using a regular expression (regex) for pattern matching. Regex is largely beyond the scope of this tutorial, but it a wildly useful programmatic tool for advanced users. I will do my best to include plain language explanations for all my regex patterns, but for those who are interested to learn more I highly recommend reading this <a href="https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html">vignette</a> on cran.</p>
+<pre><code># Locate Raster files, "bil" extension.
+folder1 &lt;- list.files("Data")[1] # Select first data folder in download directory
+file1 &lt;- list.files(paste("Data", folder1, sep = "/"), 
+                    # pattern = regex, literal "bil.bil" at end of string.
+                    pattern = "bil.bil$",
+                    # Full file path 
+                    full.names = T)
+# There should only be one .bil file per data folder
+# Get file name from file path
+# Use length() function to return the last item in the list (i.e. index = length(list))
+name &lt;- strsplit(file1, split = "/")[[1]][length(strsplit(file1, split = "/")[[1]])]</code></pre>
+<section id="loading-raster-data" class="level4" data-number="3.2.1">
+<h4 data-number="3.2.1" class="anchored" data-anchor-id="loading-raster-data"><span class="header-section-number">3.2.1</span> Loading raster data</h4>
+<p>Loading raster data in R is as simple as calling the terra <code>rast()</code> function, with the file path to the data. After loading the raster (i.e.&nbsp;terra “spatRast” object) we can map it using <code>terra::plot()</code>. Note that when terra was loaded the terra <code>plot()</code> function automatically masked the base R <code>plot()</code> function and can be called simply <code>plot()</code>.</p>
+<pre><code># Load raster data, plot
+rast1 &lt;- rast(file1)  # terra spatRaster object
+plot(rast1, main = name)  # Check if data loaded correctly</code></pre>
+</section>
+<section id="loading-vector-data" class="level4" data-number="3.2.2">
+<h4 data-number="3.2.2" class="anchored" data-anchor-id="loading-vector-data"><span class="header-section-number">3.2.2</span> Loading vector data</h4>
+<p>Similar to loading raster data, vector data can be loaded very simply using the terra <code>vect()</code> function. The resulting vector data is a “spatVect” object. When loading shapefiles, which consist of several related files in a standard structure, only the .shp file needs to be called, however any missing files not present in the given shapefile directory may cause unexpected errors.</p>
+<pre><code># Load shapefile for clipping data extent
+# Example = Maricopa county, AZ
+shp_path &lt;- list.files("Shapefile",  # Relative file path
+                      # pattern = regex, ".shp" at end of string.
+                      pattern = ".shp$",  
+                      # Full file path
+                      full.names = T)
+shp &lt;- vect(shp_path)  # terra spatVector object
+plot(shp)  # Check if data loaded correctly</code></pre>
+</section>
+<section id="data-projections" class="level4" data-number="3.2.3">
+<h4 data-number="3.2.3" class="anchored" data-anchor-id="data-projections"><span class="header-section-number">3.2.3</span> Data projections</h4>
+<p><strong>IMPORTANT!</strong> Geospatial data projections are a complex and highly technical field, related to the 2-dimensional representation of 3-dimensional objects. While I will refrain from a long tangent on map projections, suffice to say that projections are critical for mapping as well as ensuring accurate measurements. Unlike other commercial GIS software, terra will not perform “on the fly” projections, so all geospatial data must use a similar projection to be mapped appropriately.</p>
+<p>Here we will use an Arizona State Plane, Central (ft, EPSG:2223), which is appropriate for Maricopa county, AZ. For future projects discuss appropriate data projections with your project lead or GIS manager. See https://epsg.io/ to query EPSG codes for your desired projection.</p>
+<pre><code># Project Data
+# IMPORTANT!
+# Data projections control the planar (2d) shape of your map, projected from a spherical
+#   (3d) space. Projections are very important for distance and area geospatial calculations
+#   and will vary based on project and study area. Additionally, projections between data
+#   layers must match so that they will correctly align when plotting. Terra will not 
+#   perform "on the fly" projections.
+# You can check your data layer projections using the terra::crs() function.
+crs(rast1)  # PRISM raster(s) projection
+crs(shp)  # Projection of your shapefile
+# You can ignore most of the projection information here, but notice that the projections
+#   do not match.
+setequal(crs(rast), crs(shp))  # check if objects are equal
+# For this tutorial, I will use AZ State Planes, Central projection, which is appropriate
+#   for Maricopa County, AZ (EPSG:2223). Consult your PI or GIS technician for help selecting
+#   the appropriate projection for your research.
+projection = "EPSG:2223"
+# For additional help with projections see:
+#   https://epsg.io/
+
+# Reproject data
+# Reproject shp using EPSG code, overwrite shp
+shp &lt;- project(shp, projection)  # AZ State Plane, Central (ft)
+# Reproject raster 1 to match with shp, overwrite rast1
+rast1 &lt;- project(rast1, crs(shp))
+# Check projections
+crs(shp)
+crs(rast1)
+# setequal(shp, rast1)  # I am not sure why this is returning F, but the projections are matching...</code></pre>
+<p>Now that we have set our data projection we can map our data layers together on a single map. First we will map the full PRISM dataset covering the whole contiguous US, adding Maricopa county on top of our base layer.</p>
+<pre><code># Check projections and layer alignment
+plot(rast1, main = name)  # USA will look skewed in "Arizona Central" projection
+plot(shp, add = T)  # Shape will appear small on USA map, position should be correct
+# If the position of your shapefile is incorrect, or if the shapefile does not appear on
+#   the map, please double check your projection and try again.
+# Depending on the background color and size of your study area your shapefile may be 
+#   difficult to see at this stage.</code></pre>
+<p>Notice how strange the US looks in this projection? This is because our projection is optimized for central AZ. It is highly accurate in that area, and the further away from that region the data is, the more skewed the data becomes.</p>
+<p>Now lets map the data using only the extent of our shapefile, but without croping the data layer. This is equivalent of setting the x and y scales in a typical scatterplot, without modifying the underlying data.</p>
+<pre><code># Define study area extent, plot
+e &lt;- ext(shp)  # extent of your shapefile
+# Plot PRISM raster with limited extent
+plot(rast1, ext = e, main = name)
+plot(shp, add = T)
+# Your shapefile should be visible as a thin outline.</code></pre>
+</section>
+<section id="crop-the-data" class="level4" data-number="3.2.4">
+<h4 data-number="3.2.4" class="anchored" data-anchor-id="crop-the-data"><span class="header-section-number">3.2.4</span> Crop the data</h4>
+<p>Now that we have set our projection and we have an extent that we are happy with we can crop our data layer.</p>
+<pre><code># Crop raster, plot
+rast_crop &lt;- crop(rast1, 1.05 * e)  # Add 5% margin to extent to avoid clipping vertices
+plot(rast_crop, main = name)
+plot(shp, add = T)</code></pre>
+</section>
+<section id="save-the-output" class="level4" data-number="3.2.5">
+<h4 data-number="3.2.5" class="anchored" data-anchor-id="save-the-output"><span class="header-section-number">3.2.5</span> Save the output</h4>
+<p>Create a new directory for outputs and use the <code>writeRaster()</code> function to save the output.</p>
+<pre><code># Create directory for modified outputs
+dir.create("Output", recursive = T)  # Ignore warning if dir already exists
+writeRaster(rast_crop, filename = "Output/test_case.tif",
+            overwrite = T)</code></pre>
+<p>You should now see a new “Output” folder in your wd, with a new “test_case.tif” file in it. In the next section we will automate the above processing, and we will also make a few tweaks to make sure we maintain the correct PRISM file structure, as well as all the associated metadata.</p>
+</section>
+</section>
+<section id="automated-data-processing" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="automated-data-processing"><span class="header-section-number">3.3</span> Automated data processing</h3>
+<p>In this section we will use some complex logic to bulk process all of the data files in our “Data” folder. The raster files will be reprojected and cropped to our area of interest, and the outputs will be saved in the “Output” folder, while preserving all of the PRISM data file naming conventions and file tree. All metadata will be copied to the new directory, and (optionally) the raw data will be erased.</p>
+<p>While it is recommended that the PRISM raw data files are deleted, the data files may not be recoverable through the recycling bin. Therefore, <strong>please be sure that you do not need to retain the raw data before proceeding, as repreated downloading of data from the PRISM api may not be possible</strong>.</p>
+<pre><code># Optional vars
+retainRaw &lt;- F  # Keep raw data (full USA extent)?</code></pre>
+<pre><code># Crop all Datasets ----
+# Now that we have explored our data and tested our algorithm we can automate the cropping
+#   of all the remaining files.
+# Setup
+# list directories
+dirs &lt;- list.dirs("Data", recursive = F)
+dirs
+
+system.time({  # Timing function
+  # Load, crop, save, looping function
+  # For directory in list of directories
+  for(dir in dirs) {
+    i &lt;- which(dirs == dir) # Get index number in dirs using pattern matching
+    # Progress Statement
+    print(paste("Processing file #", i, " of ", length(dirs), ".", sep = ""))
+    
+    # Explore dir
+    files &lt;- list.files(path = dir)  # Get dir contents
+    # Drop extension from file, for output dir
+    name &lt;- strsplit(files[1], split = "\\.")[[1]][1]  # Split sting on literal "."
+    # Create output directory
+    dir.create(paste("Output/", name, sep = "/"), recursive = T)
+   
+    # For each file in list of files
+    for (file in files) {
+      # If file is .bil (raster data)
+      if (grepl("bil.bil$", file) == T) {
+        # Process raster data
+        r &lt;- rast(paste(dir, file, sep = "/")) # load raster data
+        r_proj &lt;- project(r, projection) # project
+        r_crop &lt;- crop(r_proj, ext(1.05 * ext(shp))) # crop
+
+        # Write cropped raster data
+        # Preserve file structure and naming conventions from PRISM
+        writeRaster(r_crop, 
+          filename = paste("Output/", name, "/", name, ".bil", sep = ""), 
+          filetype = "EHdr",  # Esri .bil format
+          overwrite = T)  # Enable overwriteing
+      } else {  # File metadata
+        metadataFile = list.files(dir, pattern = file, full.names = T)
+        # Copy metadata into output dir)
+        file.copy(metadataFile,
+          paste("Output/", name, sep = ""))
+      }
+    }  # end for file in files
+
+    if (retainRaw == F) {
+      # Delete raw data
+      unlink(dir, recursive = T)
+    }
+  }  # end for dir in dirs
+})  # end sys.time</code></pre>
+<p>Processing for this small example takes approximately 13 seconds.</p>
+</section>
+<section id="sec-cropData" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="sec-cropData"><span class="header-section-number">3.4</span> Checking the cropped data</h3>
+<p>As with the raw data above, we will check the contents of our cropped data in the “Output” directory and look at how much space we have saved by cropping our data. If you restarted your R session at the beginning of <a href="#sec-terra" class="quarto-xref">Section&nbsp;3</a> then you may need to rerun the <code>dir_size()</code> function in <a href="#sec-rawData" class="quarto-xref">Section&nbsp;2.5</a>.</p>
+<pre><code># Optional: Check size of Output files
+croppedDataSize &lt;- dir_size("Output")/10**6
+cat(paste("Output folder size on disk =", croppedDataSize , "MB", sep = " "))
+storageSaved &lt;- rawDataSize - croppedDataSize
+cat(paste("Space saved on disk by cropping files =", storageSaved, "MB", sep = " "))</code></pre>
+<p>In this example we reduced our file storage from over 100 MB to less than 21 MB, a savings of nearly 80%!</p>
+</section>
+</section>
+<section id="conclusions" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">4</span> Conclusions</h2>
+<p>In this simple example I have shown you how to efficiently download bulk climactic data from the PRISM api using the prism R package. I also briefly introduced the terra package, and showed you how to explore and map geospatial data. Then we used a simple code block to automate the bulk processing of raw data for our area of interest, saving ~80% of file storage requirements.</p>
+<p>Hopefully by now you feel confident in being able to apply these methods to your own study area. By updating the shapefile, and modifying a few key variables you can efficiently acquire climactic data for a broad range of applications anywhere in the contiguous US. Using the R script accompanying this tutorial you can wow your supervisors and be the envy of your peers with how simply and efficiently you are able to access the data you need.</p>
+
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-base_R" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">R Core Team (2024) <a href="https://www.R-project.org/">R: A language and environment for statistical computing</a>. R Foundation for Statistical Computing, Vienna, Austria</div>
+</div>
+<div id="ref-prism" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Hart EM, Bell K (2015) <a href="https://doi.org/10.5281/zenodo.33663">Prism: Download data from the oregon prism project</a></div>
+</div>
+<div id="ref-lubridate" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Grolemund G, Wickham H (2011) <a href="https://www.jstatsoft.org/v40/i03/">Dates and times made easy with <span class="nocase">lubridate</span></a>. Journal of Statistical Software 40(3):1–25</div>
+</div>
+<div id="ref-terra" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Hijmans RJ (2024) <a href="https://CRAN.R-project.org/package=terra">Terra: Spatial data analysis</a></div>
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -739,38 +921,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
-(function() {
-  let previousOnload = window.onload;
-  window.onload = () => {
-    if (previousOnload) {
-      previousOnload();
-    }
-    lightboxQuarto.on('slide_before_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      const href = trigger.getAttribute('href');
-      if (href !== null) {
-        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-        if (imgEl !== null) {
-          const srcAttr = imgEl.getAttribute("src");
-          if (srcAttr && srcAttr.startsWith("data:")) {
-            slideConfig.href = srcAttr;
-          }
-        }
-      } 
-    });
-  
-    lightboxQuarto.on('slide_after_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(slideNode);
-      }
-    });
-  
-  };
-  
-})();
-          </script>
 
 
 
