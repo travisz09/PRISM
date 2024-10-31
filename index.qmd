@@ -74,13 +74,13 @@ prism_set_dl_dir(paste(dir.string, "Data", sep = "/"))
 Now that we have set up our directory, we next have to define the date range and variables of interest. Here I have defined a date range and set of variables for this tutorial, but in the future, this will be the section of code which you will primaraly be responsible for updating to suit the needs of your project.
 
 #### Setting a date range
-At minimum a date range is required for data to download. Depending on the data set that you are interested in, some PRISM records extend back as far as 1895, and new data is typically made available in near real time. Here we will look for data from the beginning of 2020 through 2022.
+At minimum, a date range is required for data to download. Depending on the data set that you are interested in, some PRISM records extend back as far as 1895, and new data is typically made available in near real time. Here we will look for data from the beginning of 2020 through 2022.
 
 ```
 # Define date range
 min.Date <- "2020-01-01"
 max.Date <- "2022-12-31"
-# For most up to date data available, use max.Date <- lubridate::today()
+# For the most up to date data available, use max.Date <- lubridate::today()
 ```
 
 Additionally, in some instances you may only be interested in a certain months of the year. You may optionally set a range of months here. If no months are defined, the default behavior will be to download all months of the year (if applicable). In this example we will only look at data from April to July (4 to 7).
@@ -164,7 +164,6 @@ if (tRes == "monthlys") {
 At this point all of your data should have downloaded into the "Data" folder. You can check on your files using the file explorer (or finder on Mac). We will use a custom function to check our files programmatically and return the total size of files in our directory, this will also allow us to quantify the storage savings after we have cropped our files in @sec-cropData.
 
 ```
-#| label: dataSize-fun
 # Optional: Check size of downloaded data
 dir_size <- function(path, recursive = TRUE) {
   stopifnot(is.character(path))
@@ -181,7 +180,7 @@ cat(paste("Data folder size on disk =", rawDataSize, "MB", sep = " "))
 Approximate size of files on disk = 105 MB.
 
 ## Cropping PRISM data to study area {#sec-terra}
-So far we have been working primaraly with the prism package, and have succeeded in connecting to the PRISM api and eficiently downloading data in bulk. However, this could arguably have been achieved just as efficiently by simply calling the required function from the prism package, without all the extranious setup. Here we will extend the useful application of the prism package by incorporating functions from the terra package [@terra] to crop the data to a study area, thereby saving ourselves from the enormous data storage costs of maintaining nation wide datasets, when we are only interested in a small region.
+So far we have been working primaraly with the prism package, and have succeeded in connecting to the PRISM api and efficiently downloading data in bulk. However, this could arguably have been achieved just as efficiently by simply calling the required function from the prism package, without all the extraneous setup. Here we will extend the useful application of the prism package by incorporating functions from the terra package [@terra] to crop the data to a study area, thereby saving ourselves from the enormous data storage costs of maintaining nation wide datasets, when we are only interested in a small region.
 
 In our example we will look at Maricopa county, AZ.
 
@@ -200,7 +199,7 @@ if(!require('terra')) {  # if package is not available, require() returns FALSE
 ```
 
 ### Exploring the data
-While we could jump straight into the automated data processing, it is generally a good idea to take a moment to explore your data prior to bulk processing. This will also afford us the opportunity to briefly explore some of the functions of terra, a massively useful package for geospatial data analysis in R!
+While we could jump straight into the automated data processing, it is generally a good idea to take a moment to explore your data prior to bulk processing. This will also afford us the opportunity to briefly explore some of the functions of terra [@tera], a massively useful package for geospatial data analysis in R!
 
 First, lets just load in a representative data folder, and a raster file. Here I will be using a regular expression (regex) for pattern matching. Regex is largely beyond the scope of this tutorial, but it a wildly useful programmatic tool for advanced users. I will do my best to include plain language explanations for all my regex patterns, but for those who are interested to learn more I highly recommend reading this [vignette](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html) on cran.
 
