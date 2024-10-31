@@ -39,19 +39,19 @@
 ## Delete raw data
 
 # WARNING!
-## Repeated downloading of files from the PRISM api may result in sancture, including
-##  blocking your IP adress. Please be respectfull of these resources.
+## Repeated downloading of files from the PRISM api may result in sanctions, including
+##  blocking your IP address. Please be respectfull of these resources.
 
 # Setup ----
 # Packages
 # Check if packages are installed, if not downlowad
 # PRISM api package 'prism'
-if(!require('prism')) {  # if package is not avaliable, require() returns FALSE
+if(!require('prism')) {  # if package is not available, require() returns FALSE
   install.packages('prism')  # install the package
   library(prism)  # Attach the package
 }
 # Working with dates 'lubridate', required for year() function
-if(!require('lubridate')) {  # if package is not avaliable, require() returns FALSE
+if(!require('lubridate')) {  # if package is not available, require() returns FALSE
   install.packages('lubridate')  # install the package
   library(lubridate)  # Attach the package
 }
@@ -66,12 +66,13 @@ getwd()  # Check wd
 dir.create("Data")  # Ignore warning if dir already exists
 
 # Assign prism download directory
+# Use the paste() function to concatenate the full file path
 # Use full directory path for more rhobust code (less error prone)
 prism_set_dl_dir(paste(dir.string, "Data", sep = "/"))
 
 # Define date range
-min.Date <- "2023-01-01"
-max.Date <- "2024-01-01"
+min.Date <- "2020-01-01"
+max.Date <- "2022-12-31"
 # For most up to date data available, use max.Date <- lubridate::today()
 # Optional: list of months to download for the get_prism_monthlies() function
 months <- c(4:7)  # Numeric list, not strings!
@@ -91,8 +92,8 @@ prismVars <- c("ppt", "tdmean")
 # Check if temporal resolution (tRes) is set correctly.
 # If tRes not in list
 if (tRes != "dailys" & tRes != "monthlys" & tRes != "annual" & tRes != "normals") {
-  # Print an error message
-  stop('tRes must be one of "dailys", "monthlys", "annual", or "normals".')
+  # Print a custom error message
+  stop('tRes must be one of "dailys", "monthlys", "annual", or "normals". Please ensure your variable is set correctly.')
 }
 
 # If tRes is "dailys"
@@ -187,15 +188,16 @@ dir_size <- function(path, recursive = TRUE) {
   files <- list.files(path, full.names = T, recursive = recursive)
   vect_size <- sapply(files, function(x) file.size(x))
   size_files <- sum(vect_size)
-  size_files  # return
+  size_files  # return file size in bytes
 }
-rawDataSize <- dir_size("Data")/10**6
+rawDataSize <- dir_size("Data")/10**6  # bytes to MB
+# Print statement
 cat(paste("Data folder size on disk =", rawDataSize, "MB", sep = " "))
 
 # Explore Data ----
 # Packages
 # "terra" package for working with geospatial datasets
-if(!require('terra')) {  # if package is not avaliable, require() returns FALSE
+if(!require('terra')) {  # if package is not available, require() returns FALSE
   install.packages('terra')  # install the package
   library(terra)  # Attach the package
 }
@@ -213,7 +215,7 @@ file1 <- list.files(paste("Data", folder1, sep = "/"),
 name <- strsplit(file1, split = "/")[[1]][length(strsplit(file1, split = "/")[[1]])]  
 
 # Load raster data, plot
-rast1 <- rast(file1)  # terra spatRaster objecct
+rast1 <- rast(file1)  # terra spatRaster object
 plot(rast1, main = name)  # Check if data loaded correctly
 
 # Load shapefile for clipping data extent
@@ -254,12 +256,12 @@ rast1 <- project(rast1, crs(shp))
 # Check projections
 crs(shp)
 crs(rast1)
-# setequal(shp, rast1)  # I am not sure why this is returning F, but the projections are mathcing...
+# setequal(shp, rast1)  # I am not sure why this is returning F, but the projections are matching...
 
 # Check projections and layer alignment
 plot(rast1, main = name)  # USA will look skewed in "Arizona Central" projection
-plot(shp, add = T)  # Shape will appear small on USA map, possition should be correct
-# If the possition of your shapefile is incorrect, or if the shapefile does not appear on
+plot(shp, add = T)  # Shape will appear small on USA map, position should be correct
+# If the position of your shapefile is incorrect, or if the shapefile does not appear on
 #   the map, please double check your projection and try again.
 # Depending on the background color and size of your study area your shapefile may be 
 #   difficult to see at this stage.
@@ -269,10 +271,10 @@ e <- ext(shp)  # extent of your shapefile
 # Plot PRISM raster with limited extent
 plot(rast1, ext = e, main = name)
 plot(shp, add = T)
-# Your shapefile should be vissible as a thin outline.
+# Your shapefile should be visible as a thin outline.
 
 #Crop raster, plot
-rast_crop <- crop(rast1, 1.05 * e)  # Add 5% margin to extent to avoid clipping verticies
+rast_crop <- crop(rast1, 1.05 * e)  # Add 5% margin to extent to avoid clipping vertices
 plot(rast_crop, main = name)
 plot(shp, add = T)
 
@@ -299,7 +301,7 @@ dirs
 # shp <- project(vect(shp_path), projection)  # terra spatVector object
 # e <- 1.05 * ext(shp) # same ext as above
 
-# Optinal vars
+# Optional vars
 retainRaw <- F  # Keep raw data (full USA extent)?
 
 system.time({  # Timing function
