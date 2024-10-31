@@ -414,5 +414,5 @@ In this simple example I have shown you how to efficiently download bulk climact
 
 Hopefully by now you feel confident in being able to apply these methods to your own study area. By updating the shapefile, and modifying a few key variables you can efficiently acquire climactic data for a broad range of applications anywhere in the contiguous US. Using the R script accompanying this tutorial you can wow your supervisors and be the envy of your peers with how simply and efficiently you are able to access the data you need.
 
-
-
+### Get the code
+Access the full R script used in this tutorial [here](https://github.com/travisz09/PRISM/tree/main/R-Script).
