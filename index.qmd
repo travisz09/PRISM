@@ -32,7 +32,7 @@ While the prism R package is great, the goal of this tutorial, and associated sc
 ### Setup
 As with any R [@base_R] script, we must first load the required packages. Initially we will utilize 2 packages, prism and lubridate. The prism [@prism] package is the primary R package for programmatically interacting with the PRISM api. Lubridate [@lubridate] is a package for working with dates, and will be used for its `years()` function.
 
-```
+```{r}
  Setup ----
 # Packages
 # Check if packages are installed, if not downlowad
